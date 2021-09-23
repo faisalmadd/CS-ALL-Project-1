@@ -81,6 +81,8 @@ def insert_record():
             })
             con.commit()
             messagebox.showinfo('confirmation', 'Record Saved')
+            import os
+            os.system('python login.py')
 
         except Exception as ep:
             messagebox.showerror('', ep)
