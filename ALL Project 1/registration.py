@@ -17,10 +17,10 @@ cur.execute('''CREATE TABLE IF NOT EXISTS record(
             ''')
 con.commit()
 
-ws = Tk()
-ws.title("eBook Reader - Registration Page")
-ws.geometry('800x600')
-ws.config(bg='#F44336')
+registration_page = Tk()
+registration_page.title("eBook Reader - Registration Page")
+registration_page.geometry('800x600')
+registration_page.config(bg='#F44336')
 
 
 def insert_record():
@@ -81,13 +81,19 @@ def insert_record():
             })
             con.commit()
             messagebox.showinfo('confirmation', 'Record Saved')
-            import os
-            os.system('python login.py')
+            back_login()
 
         except Exception as ep:
             messagebox.showerror('', ep)
     else:
         messagebox.showerror('Error', warn)
+
+
+def back_login():
+    registration_page.destroy()
+    import login
+    login.login_page.mainloop()
+
 
 var = StringVar()
 var.set('male')
@@ -102,19 +108,19 @@ variable.set(countries[106])
 
 # widgets
 l = Label(
-    ws,
+    registration_page,
     text="Registration",
     bg='#F44336')
 l.config(font=("Arial", 20))
 
 l2 = Label(
-    ws,
+    registration_page,
     text="Create A New Account",
     bg='#F44336')
 l2.config(font=("Arial", 18))
 
 right_frame = Frame(
-    ws,
+    registration_page,
     bd=0,
     bg='#F44336',
     relief=SOLID,
@@ -244,13 +250,22 @@ register_btn = Button(
     command=insert_record
 )
 
+back_btn = Button(
+    right_frame,
+    text='Already have an account',
+    font=f,
+    relief=SOLID,
+    cursor='hand2',
+    command=back_login)
+
 register_name.grid(row=0, column=1, pady=10, padx=20)
 register_email.grid(row=1, column=1, pady=10, padx=20)
 register_mobile.grid(row=2, column=1, pady=10, padx=20)
 register_country.grid(row=4, column=1, pady=10, padx=20)
 register_pwd.grid(row=5, column=1, pady=10, padx=20)
 pwd_again.grid(row=6, column=1, pady=10, padx=20)
-register_btn.grid(row=7, column=1, pady=10, padx=20)
+register_btn.grid(row=7, column=0, pady=10, padx=20)
+back_btn.grid(row=7, column=1, pady=10, padx=20)
 l.grid(row=0, column=0, pady=10, padx=20)
 l2.grid(row=0, column=0, pady=10, padx=20)
 l.place(x=355, y=20)
@@ -262,4 +277,4 @@ male_rb.pack(expand=True, side=LEFT)
 female_rb.pack(expand=True, side=LEFT)
 
 # infinite loop
-ws.mainloop()
+registration_page.mainloop()

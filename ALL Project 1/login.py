@@ -1,23 +1,13 @@
-import sqlite3
 from tkinter import *
 from tkinter import messagebox
+import sqlite3
 
 f = ('Times', 14)
 
-con = sqlite3.connect('userdata.db')
-cur = con.cursor()
-cur.execute('''CREATE TABLE IF NOT EXISTS record(
-                    name text, 
-                    email text,
-                    password text
-                )
-            ''')
-con.commit()
-
-login = Tk()
-login.title('Login')
-login.geometry('940x500')
-login.config(bg='#0B5A81')
+login_page = Tk()
+login_page.title('Login')
+login_page.geometry('940x500')
+login_page.config(bg='#0B5A81')
 
 
 def login_response():
@@ -45,8 +35,7 @@ def login_response():
     if check_counter == 2:
         if uname == username and upwd == pwd:
             messagebox.showinfo('Login Status', 'Logged in Successfully!')
-            import os
-            os.system('python registration.py')
+            success_login()
 
         else:
             messagebox.showerror('Login Status', 'invalid username or password')
@@ -54,9 +43,15 @@ def login_response():
         messagebox.showerror('', warn)
 
 
+def success_login():
+    login_page.destroy()
+    import mainpage
+    mainpage.main_page.mainloop()
+
+
 # widgets
 left_frame = Frame(
-    login,
+    login_page,
     bd=2,
     bg='#CCCCCC',
     relief=SOLID,
@@ -103,4 +98,4 @@ login_btn.grid(row=2, column=1, pady=10, padx=20)
 left_frame.place(x=50, y=50)
 
 # infinite loop
-login.mainloop()
+login_page.mainloop()
