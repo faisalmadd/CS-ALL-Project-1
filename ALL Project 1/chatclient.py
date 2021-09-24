@@ -4,7 +4,7 @@ import threading
 from tkinter import simpledialog
 
 HOST = '127.0.0.1'
-PORT = 9090
+PORT = 8080
 
 
 class Client:
