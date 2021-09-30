@@ -16,6 +16,11 @@ sidebar_frame = Frame(main_page, bg="White", borderwidth=2, relief=RIDGE)
 variable = StringVar()
 variable.set(categories[0])
 
+
+def go_upload():
+    import upload
+    upload.upload_page.mainloop()
+
 # widgets
 header_label = Label(main_page, text="eBook Reader")
 header_label.config(font=("sans", 20, 'bold'))
@@ -42,7 +47,7 @@ recommendations_btn = Button(sidebar_frame, text='Recommendations')
 featured_btn = Button(sidebar_frame, text='Featured')
 categories_btn = Button(sidebar_frame, text='Categories')
 downloaded_btn = Button(sidebar_frame, text='Downloaded eBooks')
-upload_btn = Button(sidebar_frame, text='Upload an eBook')
+upload_btn = Button(sidebar_frame, text='Upload an eBook', command=go_upload)
 
 main_btn.grid(row=0, column=0, padx=10, pady=5)
 library_btn.grid(row=0, column=1, padx=10, pady=5)
