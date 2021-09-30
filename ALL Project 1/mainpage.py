@@ -18,10 +18,10 @@ variable.set(categories[0])
 
 # widgets
 header_label = Label(main_page, text="eBook Reader")
-header_label.config(font=("sans", 20))
+header_label.config(font=("sans", 20, 'bold'))
 
 featured_lbl = Label(main_page, text="Featured Reads", bg='#F44336')
-featured_lbl.config(font=("sans", 18))
+featured_lbl.config(font=("sans", 18, 'italic'))
 
 main_btn = Button(top_frame, text='Main Page')
 library_btn = Button(top_frame, text='My Library')
