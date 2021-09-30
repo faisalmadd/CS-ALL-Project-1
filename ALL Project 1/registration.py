@@ -7,6 +7,7 @@ f = ('Arial', 14)
 con = sqlite3.connect('userdata.db')
 cur = con.cursor()
 cur.execute('''CREATE TABLE IF NOT EXISTS record(
+                    user_id integer primary key autoincrement,
                     name text, 
                     email text, 
                     contact number, 
@@ -70,15 +71,16 @@ def insert_record():
         try:
             con = sqlite3.connect('userdata.db')
             cur = con.cursor()
-            cur.execute("INSERT INTO record VALUES (:name, :email, :contact, :gender, :country, :password)", {
-                'name': register_name.get(),
-                'email': register_email.get(),
-                'contact': register_mobile.get(),
-                'gender': var.get(),
-                'country': variable.get(),
-                'password': register_pwd.get()
+            cur.execute("INSERT INTO record (name, email, contact, gender, country, password) VALUES (:name, :email, "
+                        ":contact, :gender, :country, :password)", {
+                            'name': register_name.get(),
+                            'email': register_email.get(),
+                            'contact': register_mobile.get(),
+                            'gender': var.get(),
+                            'country': variable.get(),
+                            'password': register_pwd.get()
 
-            })
+                        })
             con.commit()
             messagebox.showinfo('confirmation', 'Record Saved')
             back_login()

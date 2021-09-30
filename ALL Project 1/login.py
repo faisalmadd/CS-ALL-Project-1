@@ -15,8 +15,8 @@ def login_response():
         con = sqlite3.connect('userdata.db')
         c = con.cursor()
         for row in c.execute("Select * from record"):
-            username = row[1]
-            pwd = row[5]
+            username = row[2]
+            pwd = row[6]
 
     except Exception as ep:
         messagebox.showerror('', ep)
