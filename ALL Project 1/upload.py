@@ -1,7 +1,10 @@
+import os.path
+import shutil
 from tkinter import *
 from tkinter import messagebox
 from tkinter import filedialog
 import sqlite3
+
 
 f = ('Arial', 14)
 
@@ -13,7 +16,8 @@ cur.execute('''CREATE TABLE IF NOT EXISTS books(
                     author text,
                     ISBN number, 
                     synopsis text, 
-                    category text
+                    category text,
+                    path text
                 )
             ''')
 con.commit()
@@ -47,17 +51,25 @@ def insert_book():
     else:
         check_counter += 1
 
-    if check_counter == 5:
+    if book_link.get() == "":
+        warn = "Please choose a file"
+    else:
+        check_counter += 1
+
+    if check_counter == 6:
         try:
+            shutil.copy(book_link.get(), '/Users/faisalahmed/Documents/GitHub/CS-ALL-Project-1/ALL Project 1/Library/')
             con = sqlite3.connect('userdata.db')
             cur = con.cursor()
-            cur.execute("INSERT INTO record (title, author, ISBN, synopsis, category) VALUES (:title, :author, :ISBN, "
-                        ":synopsis, :category)", {
+            cur.execute("INSERT INTO books (title, author, ISBN, synopsis, category, path) VALUES (:title, :author, "
+                        ":ISBN, :synopsis, :category, :path)", {
                             'title': book_title.get(),
                             'author': book_author.get(),
                             'ISBN': book_ISBN.get(),
                             'synopsis': book_synopsis.get(),
-                            'category': variable.get()
+                            'category': variable.get(),
+                            'path': ('/Users/faisalahmed/Documents/GitHub/CS-ALL-Project-1/ALL Project 1/Library/' +
+                                     os.path.basename(upload_page.filename))
 
                         })
             con.commit()
@@ -73,6 +85,7 @@ def insert_book():
 def choose_file():
     upload_page.filename = filedialog.askopenfilename(initialdir='../', title='Select a file',
                                                       filetypes=[('PDF files', '*.pdf')])
+    book_link.insert(END, upload_page.filename)
 
 
 upload_page = Tk()
@@ -123,6 +136,8 @@ book_synopsis = Entry(right_frame, font=f, width=50)
 book_category = OptionMenu(right_frame, variable, *categories)
 book_category.config(width=62, font=('Times', 12))
 
+book_link = Entry(right_frame, font=f, width=50)
+
 choose_btn = Button(right_frame, width=50, text='Choose a file to upload', font=f, relief=SOLID, cursor='hand2',
                     command=choose_file)
 
@@ -136,8 +151,9 @@ book_author.grid(row=1, column=1, pady=10, padx=20)
 book_ISBN.grid(row=2, column=1, pady=10, padx=20)
 book_synopsis.grid(row=3, column=1, pady=10, padx=20)
 book_category.grid(row=4, column=1, pady=10, padx=20)
+book_link.grid(row=5, column=1, pady=10, padx=20)
 
-choose_btn.grid(row=5, column=1, pady=10, padx=20)
+choose_btn.grid(row=6, column=1, pady=10, padx=20)
 upload_btn.grid(row=7, column=1, pady=10, padx=20)
 back_btn.grid(row=7, column=0, pady=10, padx=20)
 upload_label.grid(row=0, column=0, pady=10, padx=20)
