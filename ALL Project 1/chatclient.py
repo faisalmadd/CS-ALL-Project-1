@@ -31,7 +31,8 @@ class Client:
 
     def gui_loop(self):
         self.win = tkinter.Tk()
-        self.win.configure(bg="#0B5A81")
+        self.win.title("eBook Reader - Chat")
+        self.win.configure(bg="#F44336")
 
         self.chat_label = tkinter.Label(self.win, text="Chat:", bg="lightgray")
         self.chat_label.config(font=("Arial", 12))
