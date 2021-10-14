@@ -2,6 +2,7 @@ import socket
 import tkinter
 import threading
 from tkinter import simpledialog
+from tkinter import scrolledtext
 
 HOST = '127.0.0.1'
 PORT = 8080
@@ -30,7 +31,7 @@ class Client:
 
     def gui_loop(self):
         self.win = tkinter.Tk()
-        self.win.configure(bg="lightgray")
+        self.win.configure(bg="#0B5A81")
 
         self.chat_label = tkinter.Label(self.win, text="Chat:", bg="lightgray")
         self.chat_label.config(font=("Arial", 12))
