@@ -90,4 +90,3 @@ class Client:
                 break
 
 
-client = Client(HOST, PORT)

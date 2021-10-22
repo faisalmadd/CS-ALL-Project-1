@@ -124,8 +124,8 @@ l2.config(font=("Arial", 18))
 right_frame = Frame(
     registration_page,
     bd=0,
-    bg='#F44336',
-    relief=SOLID,
+    bg='#CCCCCC',
+    relief=RIDGE,
     padx=10,
     pady=10
 )
@@ -268,11 +268,10 @@ register_pwd.grid(row=5, column=1, pady=10, padx=20)
 pwd_again.grid(row=6, column=1, pady=10, padx=20)
 register_btn.grid(row=7, column=0, pady=10, padx=20)
 back_btn.grid(row=7, column=1, pady=10, padx=20)
-l.grid(row=0, column=0, pady=10, padx=20)
-l2.grid(row=0, column=0, pady=10, padx=20)
-l.place(x=355, y=20)
-l2.place(x=315, y=55)
-right_frame.place(x=220, y=120)
+
+l.place(x=355, y=30)
+l2.place(x=315, y=65)
+right_frame.place(x=215, y=110)
 
 gender_frame.grid(row=3, column=1, pady=10, padx=20)
 male_rb.pack(expand=True, side=LEFT)
