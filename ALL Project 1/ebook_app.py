@@ -6,6 +6,7 @@ from tkinter import SOLID, N, messagebox, W, LEFT, RIDGE, BOTH, RIGHT, TOP, file
 from PIL import Image, ImageTk
 from chatclient import Client
 import PyPDF2
+import random
 
 f = ('Arial', 14)
 ENCODING = 'utf-8'
@@ -296,6 +297,7 @@ class MainPage(tk.Frame):
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg='#BFCACA')
+        self.controller = controller
 
         categories = ['All Categories', 'Action and Adventure', 'Self Improvement', 'Mystery', 'Horror', 'Fantasy',
                       'Sci-Fi']
@@ -305,9 +307,31 @@ class MainPage(tk.Frame):
 
         variable = tk.StringVar()
         variable.set(categories[0])
+        ran6 = random.sample(range(1,5), 4)
+
+        def readSingleRow(bookID):
+            warn = ""
+            try:
+                con = sqlite3.connect('userdata.db')
+                cursor = con.cursor()
+                query = "SELECT * from books where book_id = ?"
+                cursor.execute(query, (bookID,))
+                bookRecord = cursor.fetchone()
+                coverFile = bookRecord[7]
+                return coverFile
+
+            except Exception as ep:
+                    messagebox.showerror('', ep)
+            else:
+                messagebox.showerror('Error', warn)
 
         # widgets
-        book1 = Image.open('../ALL Project 1/Library/BookCover/robinson_crusoe.jpg')
+        coverList = []
+        for x in ran6:
+            coverList.append(readSingleRow(x))
+        print(coverList)
+        
+        book1 = Image.open(coverList[0])
         book1 = book1.resize((131, 170), Image.ANTIALIAS)
         book1 = ImageTk.PhotoImage(book1)
         book1_label = tk.Label(self, image=book1)
@@ -316,7 +340,7 @@ class MainPage(tk.Frame):
         book1_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.show_frame(DetailPage))
         book1_btn.place(x=225, y=345)
 
-        book2 = Image.open('../ALL Project 1/Library/BookCover/the_valley_of_fear.jpeg')
+        book2 = Image.open(coverList[1])
         book2 = book2.resize((131, 170), Image.ANTIALIAS)
         book2 = ImageTk.PhotoImage(book2)
         book2_label = tk.Label(self, image=book2)
@@ -325,7 +349,7 @@ class MainPage(tk.Frame):
         book2_btn = tk.Button(self, width=15, text='View Book')
         book2_btn.place(x=400, y=345)
 
-        book3 = Image.open('../ALL Project 1/Library/BookCover/time_management.jpeg')
+        book3 = Image.open(coverList[2])
         book3 = book3.resize((131, 170), Image.ANTIALIAS)
         book3 = ImageTk.PhotoImage(book3)
         book3_label = tk.Label(self, image=book3)
@@ -333,6 +357,15 @@ class MainPage(tk.Frame):
         book3_label.place(x=575, y=160)
         book3_btn = tk.Button(self, width=15, text='View Book')
         book3_btn.place(x=575, y=345)
+
+        book4 = Image.open(coverList[3])
+        book4 = book4.resize((131, 170), Image.ANTIALIAS)
+        book4 = ImageTk.PhotoImage(book4)
+        book4_label = tk.Label(self, image=book4)
+        book4_label.image = book4
+        book4_label.place(x=225, y=390)
+        book4_btn = tk.Button(self, width=15, text='View Book')
+        book4_btn.place(x=225, y=575)
 
         header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
         header_label.config(font=("sans", 20, 'bold'))
@@ -390,7 +423,7 @@ class DetailPage(tk.Frame):
         profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
         logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
 
-        book1 = Image.open('../ALL Project 1/Library/BookCover/robinson_crusoe.jpg')
+        book1 = Image.open('../ALL Project 1/Library/BookCover/innsmouth.jpg')
         book1 = book1.resize((131, 170), Image.ANTIALIAS)
         book1 = ImageTk.PhotoImage(book1)
         book1_label = tk.Label(self, image=book1)
@@ -456,7 +489,7 @@ class ReaderPage(tk.Frame):
         book_text = tk.scrolledtext.ScrolledText(self, height=35, width=98)
         book_text.place(x=40, y=80)
 
-        pdf_file = PyPDF2.PdfFileReader('../ALL Project 1/Library/Robinson_Crusoe.pdf')
+        pdf_file = PyPDF2.PdfFileReader('../ALL Project 1/Library/The-Shadow-Over-Innsmouth.pdf')
         pages = pdf_file.getNumPages()
         for page_number in range(pages):
             page = pdf_file.getPage(page_number)
@@ -533,7 +566,8 @@ class UploadPage(tk.Frame):
                             ISBN number, 
                             synopsis text, 
                             category text,
-                            path text
+                            path text,
+                            cover text
                         )
                     ''')
         con.commit()
@@ -564,6 +598,8 @@ class UploadPage(tk.Frame):
 
         tk.Label(mainFrame, text="Upload File", bg='#CCCCCC', font=f).grid(row=5, column=0, sticky=W, pady=10)
 
+        tk.Label(mainFrame, text="Upload Cover", bg='#CCCCCC', font=f).grid(row=7, column=0, sticky=W, pady=10)
+
         book_title = tk.Entry(mainFrame, font=f, width=50)
 
         book_author = tk.Entry(mainFrame, font=f, width=50)
@@ -577,8 +613,13 @@ class UploadPage(tk.Frame):
 
         book_link = tk.Entry(mainFrame, font=f, width=50)
 
+        cover_link = tk.Entry(mainFrame, font=f, width=50)
+
         choose_btn = tk.Button(mainFrame, width=50, text='Choose a file to upload', font=f, relief=SOLID,
                                cursor='hand2', command=lambda: choose_file())
+
+        cover_btn = tk.Button(mainFrame, width=50, text='Choose a file to upload', font=f, relief=SOLID,
+                               cursor='hand2', command=lambda: choose_cover())
 
         upload_btn = tk.Button(mainFrame, width=50, text='Upload book!', bg='green', font=f, relief=SOLID,
                                cursor='hand2', command=lambda: insert_book())
@@ -592,10 +633,12 @@ class UploadPage(tk.Frame):
         book_synopsis.grid(row=3, column=1, pady=10, padx=20)
         book_category.grid(row=4, column=1, pady=10, padx=20)
         book_link.grid(row=5, column=1, pady=10, padx=20)
+        cover_link.grid(row=7, column=1, pady=10, padx=20)
 
         choose_btn.grid(row=6, column=1, pady=10, padx=20)
-        upload_btn.grid(row=7, column=1, pady=10, padx=20)
-        back_btn.grid(row=7, column=0, pady=10, padx=20)
+        cover_btn.grid(row=8, column=1, pady=10, padx=20)
+        upload_btn.grid(row=9, column=1, pady=10, padx=20)
+        back_btn.grid(row=9, column=0, pady=10, padx=20)
         upload_label.grid(row=0, column=0, pady=10, padx=20)
         upload_des.grid(row=0, column=0, pady=10, padx=20)
         upload_label.place(x=325, y=25)
@@ -635,20 +678,27 @@ class UploadPage(tk.Frame):
             else:
                 check_counter += 1
 
-            if check_counter == 6:
+            if cover_link.get() == "":
+                warn = "Please choose a file"
+            else:
+                check_counter += 1
+
+            if check_counter == 7:
                 try:
                     shutil.copy(book_link.get(), '../ALL Project 1/Library/')
+                    shutil.copy(cover_link.get(), '../ALL Project 1/Library/BookCover')
                     con = sqlite3.connect('userdata.db')
                     cur = con.cursor()
                     cur.execute(
-                        "INSERT INTO books (title, author, ISBN, synopsis, category, path) VALUES (:title, :author, "
-                        ":ISBN, :synopsis, :category, :path)", {
+                        "INSERT INTO books (title, author, ISBN, synopsis, category, path, cover) VALUES (:title, :author, "
+                        ":ISBN, :synopsis, :category, :path, :cover)", {
                             'title': book_title.get(),
                             'author': book_author.get(),
                             'ISBN': book_ISBN.get(),
                             'synopsis': book_synopsis.get(),
                             'category': variable.get(),
-                            'path': ('../ALL Project 1/Library/' + os.path.basename(self.filename))
+                            'path': ('../ALL Project 1/Library/' + os.path.basename(self.filename)),
+                            'cover': ('../ALL Project 1/Library/BookCover/' + os.path.basename(self.covername))
 
                         })
                     con.commit()
@@ -664,6 +714,11 @@ class UploadPage(tk.Frame):
             self.filename = filedialog.askopenfilename(initialdir='../', title='Select a file',
                                                        filetypes=[('PDF files', '*.pdf')])
             book_link.insert(END, self.filename)
+
+        def choose_cover():
+            self.covername = filedialog.askopenfilename(initialdir='../', title='Select a file',
+                                                       filetypes=[('Image files', '*.jpg *jpeg *.png')])
+            cover_link.insert(END, self.covername)
 
 
 app = App()
