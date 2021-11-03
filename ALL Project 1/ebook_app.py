@@ -13,6 +13,73 @@ ENCODING = 'utf-8'
 HOST = '127.0.0.1'
 PORT = 8080
 
+ran6 = random.sample(range(1, 5), 4)
+print(ran6)
+
+
+def readCoverFile(bookID):
+    con = sqlite3.connect('userdata.db')
+    cursor = con.cursor()
+    query = "SELECT * from books where book_id = ?"
+    cursor.execute(query, (bookID,))
+    bookRecord = cursor.fetchone()
+    coverFile = bookRecord[7]
+    return coverFile
+
+
+def readBookTitle(bookID):
+    con = sqlite3.connect('userdata.db')
+    cursor = con.cursor()
+    query = "SELECT * from books where book_id = ?"
+    cursor.execute(query, (bookID,))
+    bookRecord = cursor.fetchone()
+    bookTitle = bookRecord[1]
+    return bookTitle
+
+
+def readBookAuthor(bookID):
+    con = sqlite3.connect('userdata.db')
+    cursor = con.cursor()
+    query = "SELECT * from books where book_id = ?"
+    cursor.execute(query, (bookID,))
+    bookRecord = cursor.fetchone()
+    bookAuthor = bookRecord[2]
+    return bookAuthor
+
+
+def readBookSynopsis(bookID):
+    con = sqlite3.connect('userdata.db')
+    cursor = con.cursor()
+    query = "SELECT * from books where book_id = ?"
+    cursor.execute(query, (bookID,))
+    bookRecord = cursor.fetchone()
+    bookSynopsis = bookRecord[4]
+    return bookSynopsis
+
+
+def readBookPath(bookID):
+    con = sqlite3.connect('userdata.db')
+    cursor = con.cursor()
+    query = "SELECT * from books where book_id = ?"
+    cursor.execute(query, (bookID,))
+    bookRecord = cursor.fetchone()
+    bookPath = bookRecord[6]
+    return bookPath
+
+coverList = []
+titleList = []
+authorList = []
+synopsisList = []
+pathList = []
+for x in ran6:
+    coverList.append(readCoverFile(x))
+    titleList.append(readBookTitle(x))
+    authorList.append(readBookAuthor(x))
+    synopsisList.append(readBookSynopsis(x))
+    pathList.append(readBookPath(x))
+print(coverList)
+print(titleList)
+
 
 class App(tk.Tk):
 
@@ -307,30 +374,7 @@ class MainPage(tk.Frame):
 
         variable = tk.StringVar()
         variable.set(categories[0])
-        ran6 = random.sample(range(1,5), 4)
 
-        def readSingleRow(bookID):
-            warn = ""
-            try:
-                con = sqlite3.connect('userdata.db')
-                cursor = con.cursor()
-                query = "SELECT * from books where book_id = ?"
-                cursor.execute(query, (bookID,))
-                bookRecord = cursor.fetchone()
-                coverFile = bookRecord[7]
-                return coverFile
-
-            except Exception as ep:
-                    messagebox.showerror('', ep)
-            else:
-                messagebox.showerror('Error', warn)
-
-        # widgets
-        coverList = []
-        for x in ran6:
-            coverList.append(readSingleRow(x))
-        print(coverList)
-        
         book1 = Image.open(coverList[0])
         book1 = book1.resize((131, 170), Image.ANTIALIAS)
         book1 = ImageTk.PhotoImage(book1)
@@ -423,23 +467,18 @@ class DetailPage(tk.Frame):
         profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
         logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
 
-        book1 = Image.open('../ALL Project 1/Library/BookCover/innsmouth.jpg')
+        book1 = Image.open(coverList[0])
         book1 = book1.resize((131, 170), Image.ANTIALIAS)
         book1 = ImageTk.PhotoImage(book1)
         book1_label = tk.Label(self, image=book1)
         book1_label.image = book1
         book1_label.place(x=40, y=80)
 
-        title_label = tk.Label(self, bg='#BFCACA', text='Robinson Crusoe')
+        title_label = tk.Label(self, bg='#BFCACA', text=titleList[0])
         title_label.config(font=("Sans", 20, 'bold'))
-        author_label = tk.Label(self, bg='#BFCACA', text='Daniel Defoe')
+        author_label = tk.Label(self, bg='#BFCACA', text=authorList[0])
         author_label.config(font=("Sans", 20, 'bold'))
-        synopsis_label = tk.Message(self, bg='#BFCACA', width=400, text="Robinson Crusoe is a novel by Daniel Defoe, "
-                                                                        "first published on 25 April 1719. The first "
-                                                                        "edition credited the work's protagonist "
-                                                                        "Robinson Crusoe as its author, leading many "
-                                                                        "readers to believe he was a real person and "
-                                                                        "the book a travelogue of true incidents.")
+        synopsis_label = tk.Message(self, bg='#BFCACA', width=400, text=synopsisList[0])
         synopsis_label.config(font=("Sans", 16, 'italic'))
         title_label.place(x=200, y=80)
         author_label.place(x=200, y=110)
@@ -489,7 +528,7 @@ class ReaderPage(tk.Frame):
         book_text = tk.scrolledtext.ScrolledText(self, height=35, width=98)
         book_text.place(x=40, y=80)
 
-        pdf_file = PyPDF2.PdfFileReader('../ALL Project 1/Library/The-Shadow-Over-Innsmouth.pdf')
+        pdf_file = PyPDF2.PdfFileReader('../ALL Project 1/Library/Robinson_Crusoe.pdf')
         pages = pdf_file.getNumPages()
         for page_number in range(pages):
             page = pdf_file.getPage(page_number)
@@ -619,7 +658,7 @@ class UploadPage(tk.Frame):
                                cursor='hand2', command=lambda: choose_file())
 
         cover_btn = tk.Button(mainFrame, width=50, text='Choose a file to upload', font=f, relief=SOLID,
-                               cursor='hand2', command=lambda: choose_cover())
+                              cursor='hand2', command=lambda: choose_cover())
 
         upload_btn = tk.Button(mainFrame, width=50, text='Upload book!', bg='green', font=f, relief=SOLID,
                                cursor='hand2', command=lambda: insert_book())
@@ -690,7 +729,8 @@ class UploadPage(tk.Frame):
                     con = sqlite3.connect('userdata.db')
                     cur = con.cursor()
                     cur.execute(
-                        "INSERT INTO books (title, author, ISBN, synopsis, category, path, cover) VALUES (:title, :author, "
+                        "INSERT INTO books (title, author, ISBN, synopsis, category, path, cover) VALUES (:title, "
+                        ":author, "
                         ":ISBN, :synopsis, :category, :path, :cover)", {
                             'title': book_title.get(),
                             'author': book_author.get(),
@@ -717,7 +757,7 @@ class UploadPage(tk.Frame):
 
         def choose_cover():
             self.covername = filedialog.askopenfilename(initialdir='../', title='Select a file',
-                                                       filetypes=[('Image files', '*.jpg *jpeg *.png')])
+                                                        filetypes=[('Image files', '*.jpg *jpeg *.png')])
             cover_link.insert(END, self.covername)
 
 
