@@ -10,12 +10,11 @@ from tkPDFViewer import tkPDFViewer
 import random
 
 f = ('Arial', 14)
+ENCODING = 'utf-8'
 HOST = '127.0.0.1'
 PORT = 8080
 
-ran6 = random.sample(range(1, 5), 4)
-print(ran6)
-
+ran6 = random.sample(range(1, 21), 6)
 
 def readCoverFile(bookID):
     con = sqlite3.connect('userdata.db')
@@ -77,8 +76,6 @@ for x in ran6:
     authorList.append(readBookAuthor(x))
     synopsisList.append(readBookSynopsis(x))
     pathList.append(readBookPath(x))
-print(coverList)
-print(titleList)
 
 
 class App(tk.Tk):
@@ -94,8 +91,7 @@ class App(tk.Tk):
 
         self.frames = {}
 
-        for F in (StartPage, LoginPage, RegistrationPage, MainPage, ProfilePage, UploadPage, DetailPage, MyLibrary,
-                  ReaderPage):
+        for F in (StartPage, LoginPage, RegistrationPage, MainPage, ProfilePage, UploadPage, DetailPage1, DetailPage2, DetailPage3, DetailPage4, DetailPage5, DetailPage6, MyLibrary,ReaderPage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
@@ -366,8 +362,7 @@ class MainPage(tk.Frame):
         tk.Frame.__init__(self, parent, bg='#BFCACA')
         self.controller = controller
 
-        categories = ['All Categories', 'Action and Adventure', 'Self Improvement', 'Mystery', 'Horror', 'Fantasy',
-                      'Sci-Fi']
+        categories = ['All Categories', 'Action and Adventure', 'Self Improvement', 'Mystery', 'Horror', 'Fantasy', 'Sci-Fi', 'Romance', 'Crime', 'History']
         mainFrame = tk.Frame(self)
         top_frame = tk.Frame(self, bg='#CCCCCC')
         sidebar_frame = tk.Frame(self, bg="#CCCCCC", borderwidth=2, relief=RIDGE)
@@ -381,7 +376,7 @@ class MainPage(tk.Frame):
         book1_label = tk.Label(self, image=book1)
         book1_label.image = book1
         book1_label.place(x=225, y=160)
-        book1_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.show_frame(DetailPage))
+        book1_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.show_frame(DetailPage1))
         book1_btn.place(x=225, y=345)
 
         book2 = Image.open(coverList[1])
@@ -390,7 +385,7 @@ class MainPage(tk.Frame):
         book2_label = tk.Label(self, image=book2)
         book2_label.image = book2
         book2_label.place(x=400, y=160)
-        book2_btn = tk.Button(self, width=15, text='View Book')
+        book2_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.show_frame(DetailPage2))
         book2_btn.place(x=400, y=345)
 
         book3 = Image.open(coverList[2])
@@ -399,7 +394,7 @@ class MainPage(tk.Frame):
         book3_label = tk.Label(self, image=book3)
         book3_label.image = book3
         book3_label.place(x=575, y=160)
-        book3_btn = tk.Button(self, width=15, text='View Book')
+        book3_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.show_frame(DetailPage3))
         book3_btn.place(x=575, y=345)
 
         book4 = Image.open(coverList[3])
@@ -408,8 +403,26 @@ class MainPage(tk.Frame):
         book4_label = tk.Label(self, image=book4)
         book4_label.image = book4
         book4_label.place(x=225, y=390)
-        book4_btn = tk.Button(self, width=15, text='View Book')
+        book4_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.show_frame(DetailPage4))
         book4_btn.place(x=225, y=575)
+
+        book5 = Image.open(coverList[4])
+        book5 = book5.resize((131, 170), Image.ANTIALIAS)
+        book5 = ImageTk.PhotoImage(book5)
+        book5_label = tk.Label(self, image=book5)
+        book5_label.image = book5
+        book5_label.place(x=400, y=390)
+        book5_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.show_frame(DetailPage5))
+        book5_btn.place(x=400, y=575)
+
+        book6 = Image.open(coverList[5])
+        book6 = book6.resize((131, 170), Image.ANTIALIAS)
+        book6 = ImageTk.PhotoImage(book6)
+        book6_label = tk.Label(self, image=book6)
+        book6_label.image = book6
+        book6_label.place(x=575, y=390)
+        book6_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.show_frame(DetailPage6))
+        book6_btn.place(x=575, y=575)
 
         header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
         header_label.config(font=("sans", 20, 'bold'))
@@ -455,7 +468,7 @@ class MainPage(tk.Frame):
         featured_lbl.place(x=225, y=120)
 
 
-class DetailPage(tk.Frame):
+class DetailPage1(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg='#BFCACA')
         top_frame = tk.Frame(self, bg='#CCCCCC')
@@ -486,7 +499,257 @@ class DetailPage(tk.Frame):
 
         review_label = tk.Label(self, bg='#BFCACA', text='Ratings & Reviews')
         review_label.config(font=("Sans", 20, 'bold'))
-        review_label.place(x=40, y=275)
+        review_label.place(x=40, y=375)
+
+        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage))
+        add_fav = tk.Button(self, width=15, text='Add to My Library')
+        download_btn = tk.Button(self, width=15, text='Download')
+
+        read_btn.place(x=625, y=120)
+        add_fav.place(x=625, y=160)
+        download_btn.place(x=625, y=200)
+
+        main_btn.grid(row=0, column=0, padx=10, pady=5)
+        library_btn.grid(row=0, column=1, padx=10, pady=5)
+        profile_btn.grid(row=0, column=2, padx=10, pady=5)
+        logout_btn.grid(row=0, column=3, padx=10, pady=5)
+
+        top_frame.place(x=426, y=20)
+        header_label.place(x=40, y=20)
+        
+
+class DetailPage2(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg='#BFCACA')
+        top_frame = tk.Frame(self, bg='#CCCCCC')
+        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
+        header_label.config(font=("Sans", 20, 'bold'))
+
+        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
+        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
+        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+
+        book1 = Image.open(coverList[1])
+        book1 = book1.resize((131, 170), Image.ANTIALIAS)
+        book1 = ImageTk.PhotoImage(book1)
+        book1_label = tk.Label(self, image=book1)
+        book1_label.image = book1
+        book1_label.place(x=40, y=80)
+
+        title_label = tk.Label(self, bg='#BFCACA', text=titleList[1])
+        title_label.config(font=("Sans", 20, 'bold'))
+        author_label = tk.Label(self, bg='#BFCACA', text=authorList[1])
+        author_label.config(font=("Sans", 20, 'bold'))
+        synopsis_label = tk.Message(self, bg='#BFCACA', width=400, text=synopsisList[1])
+        synopsis_label.config(font=("Sans", 16, 'italic'))
+        title_label.place(x=200, y=80)
+        author_label.place(x=200, y=110)
+        synopsis_label.place(x=200, y=150)
+
+        review_label = tk.Label(self, bg='#BFCACA', text='Ratings & Reviews')
+        review_label.config(font=("Sans", 20, 'bold'))
+        review_label.place(x=40, y=375)
+
+        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage))
+        add_fav = tk.Button(self, width=15, text='Add to My Library')
+        download_btn = tk.Button(self, width=15, text='Download')
+
+        read_btn.place(x=625, y=120)
+        add_fav.place(x=625, y=160)
+        download_btn.place(x=625, y=200)
+
+        main_btn.grid(row=0, column=0, padx=10, pady=5)
+        library_btn.grid(row=0, column=1, padx=10, pady=5)
+        profile_btn.grid(row=0, column=2, padx=10, pady=5)
+        logout_btn.grid(row=0, column=3, padx=10, pady=5)
+
+        top_frame.place(x=426, y=20)
+        header_label.place(x=40, y=20)
+        
+
+class DetailPage3(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg='#BFCACA')
+        top_frame = tk.Frame(self, bg='#CCCCCC')
+        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
+        header_label.config(font=("Sans", 20, 'bold'))
+
+        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
+        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
+        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+
+        book1 = Image.open(coverList[2])
+        book1 = book1.resize((131, 170), Image.ANTIALIAS)
+        book1 = ImageTk.PhotoImage(book1)
+        book1_label = tk.Label(self, image=book1)
+        book1_label.image = book1
+        book1_label.place(x=40, y=80)
+
+        title_label = tk.Label(self, bg='#BFCACA', text=titleList[2])
+        title_label.config(font=("Sans", 20, 'bold'))
+        author_label = tk.Label(self, bg='#BFCACA', text=authorList[2])
+        author_label.config(font=("Sans", 20, 'bold'))
+        synopsis_label = tk.Message(self, bg='#BFCACA', width=400, text=synopsisList[2])
+        synopsis_label.config(font=("Sans", 16, 'italic'))
+        title_label.place(x=200, y=80)
+        author_label.place(x=200, y=110)
+        synopsis_label.place(x=200, y=150)
+
+        review_label = tk.Label(self, bg='#BFCACA', text='Ratings & Reviews')
+        review_label.config(font=("Sans", 20, 'bold'))
+        review_label.place(x=40, y=375)
+
+        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage))
+        add_fav = tk.Button(self, width=15, text='Add to My Library')
+        download_btn = tk.Button(self, width=15, text='Download')
+
+        read_btn.place(x=625, y=120)
+        add_fav.place(x=625, y=160)
+        download_btn.place(x=625, y=200)
+
+        main_btn.grid(row=0, column=0, padx=10, pady=5)
+        library_btn.grid(row=0, column=1, padx=10, pady=5)
+        profile_btn.grid(row=0, column=2, padx=10, pady=5)
+        logout_btn.grid(row=0, column=3, padx=10, pady=5)
+
+        top_frame.place(x=426, y=20)
+        header_label.place(x=40, y=20)
+
+
+class DetailPage4(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg='#BFCACA')
+        top_frame = tk.Frame(self, bg='#CCCCCC')
+        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
+        header_label.config(font=("Sans", 20, 'bold'))
+
+        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
+        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
+        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+
+        book1 = Image.open(coverList[3])
+        book1 = book1.resize((131, 170), Image.ANTIALIAS)
+        book1 = ImageTk.PhotoImage(book1)
+        book1_label = tk.Label(self, image=book1)
+        book1_label.image = book1
+        book1_label.place(x=40, y=80)
+
+        title_label = tk.Label(self, bg='#BFCACA', text=titleList[3])
+        title_label.config(font=("Sans", 20, 'bold'))
+        author_label = tk.Label(self, bg='#BFCACA', text=authorList[3])
+        author_label.config(font=("Sans", 20, 'bold'))
+        synopsis_label = tk.Message(self, bg='#BFCACA', width=400, text=synopsisList[3])
+        synopsis_label.config(font=("Sans", 16, 'italic'))
+        title_label.place(x=200, y=80)
+        author_label.place(x=200, y=110)
+        synopsis_label.place(x=200, y=150)
+
+        review_label = tk.Label(self, bg='#BFCACA', text='Ratings & Reviews')
+        review_label.config(font=("Sans", 20, 'bold'))
+        review_label.place(x=40, y=375)
+
+        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage))
+        add_fav = tk.Button(self, width=15, text='Add to My Library')
+        download_btn = tk.Button(self, width=15, text='Download')
+
+        read_btn.place(x=625, y=120)
+        add_fav.place(x=625, y=160)
+        download_btn.place(x=625, y=200)
+
+        main_btn.grid(row=0, column=0, padx=10, pady=5)
+        library_btn.grid(row=0, column=1, padx=10, pady=5)
+        profile_btn.grid(row=0, column=2, padx=10, pady=5)
+        logout_btn.grid(row=0, column=3, padx=10, pady=5)
+
+        top_frame.place(x=426, y=20)
+        header_label.place(x=40, y=20)
+
+
+class DetailPage5(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg='#BFCACA')
+        top_frame = tk.Frame(self, bg='#CCCCCC')
+        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
+        header_label.config(font=("Sans", 20, 'bold'))
+
+        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
+        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
+        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+
+        book1 = Image.open(coverList[4])
+        book1 = book1.resize((131, 170), Image.ANTIALIAS)
+        book1 = ImageTk.PhotoImage(book1)
+        book1_label = tk.Label(self, image=book1)
+        book1_label.image = book1
+        book1_label.place(x=40, y=80)
+
+        title_label = tk.Label(self, bg='#BFCACA', text=titleList[4])
+        title_label.config(font=("Sans", 20, 'bold'))
+        author_label = tk.Label(self, bg='#BFCACA', text=authorList[4])
+        author_label.config(font=("Sans", 20, 'bold'))
+        synopsis_label = tk.Message(self, bg='#BFCACA', width=400, text=synopsisList[4])
+        synopsis_label.config(font=("Sans", 16, 'italic'))
+        title_label.place(x=200, y=80)
+        author_label.place(x=200, y=110)
+        synopsis_label.place(x=200, y=150)
+
+        review_label = tk.Label(self, bg='#BFCACA', text='Ratings & Reviews')
+        review_label.config(font=("Sans", 20, 'bold'))
+        review_label.place(x=40, y=375)
+
+        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage))
+        add_fav = tk.Button(self, width=15, text='Add to My Library')
+        download_btn = tk.Button(self, width=15, text='Download')
+
+        read_btn.place(x=625, y=120)
+        add_fav.place(x=625, y=160)
+        download_btn.place(x=625, y=200)
+
+        main_btn.grid(row=0, column=0, padx=10, pady=5)
+        library_btn.grid(row=0, column=1, padx=10, pady=5)
+        profile_btn.grid(row=0, column=2, padx=10, pady=5)
+        logout_btn.grid(row=0, column=3, padx=10, pady=5)
+
+        top_frame.place(x=426, y=20)
+        header_label.place(x=40, y=20)
+
+
+class DetailPage6(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg='#BFCACA')
+        top_frame = tk.Frame(self, bg='#CCCCCC')
+        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
+        header_label.config(font=("Sans", 20, 'bold'))
+
+        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
+        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
+        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+
+        book1 = Image.open(coverList[5])
+        book1 = book1.resize((131, 170), Image.ANTIALIAS)
+        book1 = ImageTk.PhotoImage(book1)
+        book1_label = tk.Label(self, image=book1)
+        book1_label.image = book1
+        book1_label.place(x=40, y=80)
+
+        title_label = tk.Label(self, bg='#BFCACA', text=titleList[5])
+        title_label.config(font=("Sans", 20, 'bold'))
+        author_label = tk.Label(self, bg='#BFCACA', text=authorList[5])
+        author_label.config(font=("Sans", 20, 'bold'))
+        synopsis_label = tk.Message(self, bg='#BFCACA', width=400, text=synopsisList[5])
+        synopsis_label.config(font=("Sans", 16, 'italic'))
+        title_label.place(x=200, y=80)
+        author_label.place(x=200, y=110)
+        synopsis_label.place(x=200, y=150)
+
+        review_label = tk.Label(self, bg='#BFCACA', text='Ratings & Reviews')
+        review_label.config(font=("Sans", 20, 'bold'))
+        review_label.place(x=40, y=375)
 
         read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
@@ -615,7 +878,7 @@ class UploadPage(tk.Frame):
         con.commit()
 
         tk.Frame.__init__(self, parent, bg='#BFCACA')
-        categories = ['Action and Adventure', 'Self Improvement', 'Mystery', 'Horror', 'Fantasy', 'Sci-Fi']
+        categories = ['Action and Adventure', 'Self Improvement', 'Mystery', 'Horror', 'Fantasy', 'Sci-Fi', 'Romance', 'Crime', 'History']
         variable = tk.StringVar()
         variable.set(categories[0])
 
