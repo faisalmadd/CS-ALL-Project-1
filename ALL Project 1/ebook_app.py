@@ -6,10 +6,10 @@ from tkinter import SOLID, N, messagebox, W, LEFT, RIDGE, BOTH, RIGHT, TOP, file
 from PIL import Image, ImageTk
 from chatclient import Client
 import PyPDF2
+from tkPDFViewer import tkPDFViewer
 import random
 
 f = ('Arial', 14)
-ENCODING = 'utf-8'
 HOST = '127.0.0.1'
 PORT = 8080
 
@@ -525,15 +525,18 @@ class ReaderPage(tk.Frame):
         top_frame.place(x=426, y=20)
         header_label.place(x=40, y=20)
 
-        book_text = tk.scrolledtext.ScrolledText(self, height=35, width=98)
-        book_text.place(x=40, y=80)
+        '''book_text = tk.scrolledtext.ScrolledText(self, height=35, width=98)
+        book_text.place(x=40, y=80)'''
 
-        pdf_file = PyPDF2.PdfFileReader('../ALL Project 1/Library/Robinson_Crusoe.pdf')
+        v1 = tkPDFViewer.ShowPdf()
+        v2 = v1.pdf_view(self, pdf_location=pathList[0], width=98, height=35)
+        v2.place(x=40, y=80)
+        '''pdf_file = PyPDF2.PdfFileReader(pathList[0])
         pages = pdf_file.getNumPages()
         for page_number in range(pages):
             page = pdf_file.getPage(page_number)
             content = page.extractText()
-            book_text.insert(1.0, content)
+            book_text.insert(1.0, content)'''
 
 
 class MyLibrary(tk.Frame):
