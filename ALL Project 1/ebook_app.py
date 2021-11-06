@@ -2,10 +2,10 @@ import os
 import shutil
 import sqlite3
 import tkinter as tk
-from tkinter import SOLID, N, messagebox, W, LEFT, RIDGE, BOTH, RIGHT, TOP, filedialog, END
+from tkinter import SOLID, N, messagebox, W, LEFT, RIDGE, BOTH, RIGHT, TOP, filedialog, END, ttk
 from PIL import Image, ImageTk
+from pdf2image import convert_from_path
 from chatclient import Client
-from tkPDFViewer import tkPDFViewer
 import random
 
 f = ('Arial', 14)
@@ -774,6 +774,7 @@ class ReaderPage1(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg='#BFCACA')
         top_frame = tk.Frame(self, bg='#CCCCCC')
+        reader_frame = tk.Frame(self, bg='#CCCCCC')
         header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
         header_label.config(font=("Sans", 20, 'bold'))
 
@@ -787,18 +788,46 @@ class ReaderPage1(tk.Frame):
         profile_btn.grid(row=0, column=2, padx=10, pady=5)
         logout_btn.grid(row=0, column=3, padx=10, pady=5)
 
-        top_frame.place(x=426, y=20)
+        top_frame.place(x=426, y=15)
+        reader_frame.place(x=10, y=65)
         header_label.place(x=40, y=20)
 
-        v1 = tkPDFViewer.ShowPdf()
-        v2 = v1.pdf_view(self, pdf_location=pathList[0], width=98, height=40)
-        v2.place(x=40, y=80)
+        # PDF is converted to a list of images
+        pages = convert_from_path(pathList[0], size=(800, 900))
+
+        # Empty list for storing images
+        photos = []
+
+        tab_control = ttk.Notebook(reader_frame)
+        tab_control.place(x=10, y=10, height=600, width=800)
+        scroll_y = tk.Scrollbar(reader_frame, orient=tk.VERTICAL)
+        scroll_y.grid(row=0, column=1, sticky='ns')
+        pdf = tk.Text(reader_frame, height=43, width=108, yscrollcommand=scroll_y.set, bg="grey")
+        pdf.grid(row=0, column=0)
+        scroll_y.config(command=pdf.yview)
+
+        # Storing the converted images into list
+        for i in range(len(pages)):
+            photos.append(ImageTk.PhotoImage(pages[i]))
+
+        # Clear the text box
+        pdf.delete('1.0', tk.END)
+
+        # Adding all the images to the text widget
+        for photo in photos:
+            pdf.image_create(tk.END, image=photo)
+
+            # For Separating the pages
+            pdf.insert(tk.END, '\n\n')
+
+            pdf.photos = photos  # used an attribute of "pdf" to store the references
 
 
 class ReaderPage2(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg='#BFCACA')
         top_frame = tk.Frame(self, bg='#CCCCCC')
+        reader_frame = tk.Frame(self, bg='#CCCCCC')
         header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
         header_label.config(font=("Sans", 20, 'bold'))
 
@@ -812,18 +841,46 @@ class ReaderPage2(tk.Frame):
         profile_btn.grid(row=0, column=2, padx=10, pady=5)
         logout_btn.grid(row=0, column=3, padx=10, pady=5)
 
-        top_frame.place(x=426, y=20)
+        top_frame.place(x=426, y=15)
+        reader_frame.place(x=10, y=65)
         header_label.place(x=40, y=20)
 
-        v1 = tkPDFViewer.ShowPdf()
-        v2 = v1.pdf_view(self, pdf_location=pathList[1], width=98, height=40)
-        v2.place(x=40, y=80)
+        # PDF is converted to a list of images
+        pages = convert_from_path(pathList[1], size=(800, 900))
+
+        # Empty list for storing images
+        photos = []
+
+        tab_control = ttk.Notebook(reader_frame)
+        tab_control.place(x=10, y=10, height=600, width=800)
+        scroll_y = tk.Scrollbar(reader_frame, orient=tk.VERTICAL)
+        scroll_y.grid(row=0, column=1, sticky='ns')
+        pdf = tk.Text(reader_frame, height=43, width=108, yscrollcommand=scroll_y.set, bg="grey")
+        pdf.grid(row=0, column=0)
+        scroll_y.config(command=pdf.yview)
+
+        # Storing the converted images into list
+        for i in range(len(pages)):
+            photos.append(ImageTk.PhotoImage(pages[i]))
+
+        # Clear the text box
+        pdf.delete('1.0', tk.END)
+
+        # Adding all the images to the text widget
+        for photo in photos:
+            pdf.image_create(tk.END, image=photo)
+
+            # For Separating the pages
+            pdf.insert(tk.END, '\n\n')
+
+            pdf.photos = photos  # used an attribute of "pdf" to store the references
 
 
 class ReaderPage3(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg='#BFCACA')
         top_frame = tk.Frame(self, bg='#CCCCCC')
+        reader_frame = tk.Frame(self, bg='#CCCCCC')
         header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
         header_label.config(font=("Sans", 20, 'bold'))
 
@@ -837,18 +894,46 @@ class ReaderPage3(tk.Frame):
         profile_btn.grid(row=0, column=2, padx=10, pady=5)
         logout_btn.grid(row=0, column=3, padx=10, pady=5)
 
-        top_frame.place(x=426, y=20)
+        top_frame.place(x=426, y=15)
+        reader_frame.place(x=10, y=65)
         header_label.place(x=40, y=20)
 
-        v1 = tkPDFViewer.ShowPdf()
-        v2 = v1.pdf_view(self, pdf_location=pathList[2], width=98, height=40)
-        v2.place(x=40, y=80)
+        # PDF is converted to a list of images
+        pages = convert_from_path(pathList[2], size=(800, 900))
+
+        # Empty list for storing images
+        photos = []
+
+        tab_control = ttk.Notebook(reader_frame)
+        tab_control.place(x=10, y=10, height=600, width=800)
+        scroll_y = tk.Scrollbar(reader_frame, orient=tk.VERTICAL)
+        scroll_y.grid(row=0, column=1, sticky='ns')
+        pdf = tk.Text(reader_frame, height=43, width=108, yscrollcommand=scroll_y.set, bg="grey")
+        pdf.grid(row=0, column=0)
+        scroll_y.config(command=pdf.yview)
+
+        # Storing the converted images into list
+        for i in range(len(pages)):
+            photos.append(ImageTk.PhotoImage(pages[i]))
+
+        # Clear the text box
+        pdf.delete('1.0', tk.END)
+
+        # Adding all the images to the text widget
+        for photo in photos:
+            pdf.image_create(tk.END, image=photo)
+
+            # For Separating the pages
+            pdf.insert(tk.END, '\n\n')
+
+            pdf.photos = photos  # used an attribute of "pdf" to store the references
 
 
 class ReaderPage4(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg='#BFCACA')
         top_frame = tk.Frame(self, bg='#CCCCCC')
+        reader_frame = tk.Frame(self, bg='#CCCCCC')
         header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
         header_label.config(font=("Sans", 20, 'bold'))
 
@@ -862,18 +947,46 @@ class ReaderPage4(tk.Frame):
         profile_btn.grid(row=0, column=2, padx=10, pady=5)
         logout_btn.grid(row=0, column=3, padx=10, pady=5)
 
-        top_frame.place(x=426, y=20)
+        top_frame.place(x=426, y=15)
+        reader_frame.place(x=10, y=65)
         header_label.place(x=40, y=20)
 
-        v1 = tkPDFViewer.ShowPdf()
-        v2 = v1.pdf_view(self, pdf_location=pathList[3], width=98, height=40)
-        v2.place(x=40, y=80)
+        # PDF is converted to a list of images
+        pages = convert_from_path(pathList[3], size=(800, 900))
+
+        # Empty list for storing images
+        photos = []
+
+        tab_control = ttk.Notebook(reader_frame)
+        tab_control.place(x=10, y=10, height=600, width=800)
+        scroll_y = tk.Scrollbar(reader_frame, orient=tk.VERTICAL)
+        scroll_y.grid(row=0, column=1, sticky='ns')
+        pdf = tk.Text(reader_frame, height=43, width=108, yscrollcommand=scroll_y.set, bg="grey")
+        pdf.grid(row=0, column=0)
+        scroll_y.config(command=pdf.yview)
+
+        # Storing the converted images into list
+        for i in range(len(pages)):
+            photos.append(ImageTk.PhotoImage(pages[i]))
+
+        # Clear the text box
+        pdf.delete('1.0', tk.END)
+
+        # Adding all the images to the text widget
+        for photo in photos:
+            pdf.image_create(tk.END, image=photo)
+
+            # For Separating the pages
+            pdf.insert(tk.END, '\n\n')
+
+            pdf.photos = photos  # used an attribute of "pdf" to store the references
 
 
 class ReaderPage5(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg='#BFCACA')
         top_frame = tk.Frame(self, bg='#CCCCCC')
+        reader_frame = tk.Frame(self, bg='#CCCCCC')
         header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
         header_label.config(font=("Sans", 20, 'bold'))
 
@@ -887,18 +1000,46 @@ class ReaderPage5(tk.Frame):
         profile_btn.grid(row=0, column=2, padx=10, pady=5)
         logout_btn.grid(row=0, column=3, padx=10, pady=5)
 
-        top_frame.place(x=426, y=20)
+        top_frame.place(x=426, y=15)
+        reader_frame.place(x=10, y=65)
         header_label.place(x=40, y=20)
 
-        v1 = tkPDFViewer.ShowPdf()
-        v2 = v1.pdf_view(self, pdf_location=pathList[4], width=98, height=40)
-        v2.place(x=40, y=80)
+        # PDF is converted to a list of images
+        pages = convert_from_path(pathList[4], size=(800, 900))
+
+        # Empty list for storing images
+        photos = []
+
+        tab_control = ttk.Notebook(reader_frame)
+        tab_control.place(x=10, y=10, height=600, width=800)
+        scroll_y = tk.Scrollbar(reader_frame, orient=tk.VERTICAL)
+        scroll_y.grid(row=0, column=1, sticky='ns')
+        pdf = tk.Text(reader_frame, height=43, width=108, yscrollcommand=scroll_y.set, bg="grey")
+        pdf.grid(row=0, column=0)
+        scroll_y.config(command=pdf.yview)
+
+        # Storing the converted images into list
+        for i in range(len(pages)):
+            photos.append(ImageTk.PhotoImage(pages[i]))
+
+        # Clear the text box
+        pdf.delete('1.0', tk.END)
+
+        # Adding all the images to the text widget
+        for photo in photos:
+            pdf.image_create(tk.END, image=photo)
+
+            # For Separating the pages
+            pdf.insert(tk.END, '\n\n')
+
+            pdf.photos = photos  # used an attribute of "pdf" to store the references
 
 
 class ReaderPage6(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg='#BFCACA')
         top_frame = tk.Frame(self, bg='#CCCCCC')
+        reader_frame = tk.Frame(self, bg='#CCCCCC')
         header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
         header_label.config(font=("Sans", 20, 'bold'))
 
@@ -912,12 +1053,39 @@ class ReaderPage6(tk.Frame):
         profile_btn.grid(row=0, column=2, padx=10, pady=5)
         logout_btn.grid(row=0, column=3, padx=10, pady=5)
 
-        top_frame.place(x=426, y=20)
+        top_frame.place(x=426, y=15)
+        reader_frame.place(x=10, y=65)
         header_label.place(x=40, y=20)
 
-        v1 = tkPDFViewer.ShowPdf()
-        v2 = v1.pdf_view(self, pdf_location=pathList[5], width=98, height=40)
-        v2.place(x=40, y=80)
+        # PDF is converted to a list of images
+        pages = convert_from_path(pathList[5], size=(800, 900))
+
+        # Empty list for storing images
+        photos = []
+
+        tab_control = ttk.Notebook(reader_frame)
+        tab_control.place(x=10, y=10, height=600, width=800)
+        scroll_y = tk.Scrollbar(reader_frame, orient=tk.VERTICAL)
+        scroll_y.grid(row=0, column=1, sticky='ns')
+        pdf = tk.Text(reader_frame, height=43, width=108, yscrollcommand=scroll_y.set, bg="grey")
+        pdf.grid(row=0, column=0)
+        scroll_y.config(command=pdf.yview)
+
+        # Storing the converted images into list
+        for i in range(len(pages)):
+            photos.append(ImageTk.PhotoImage(pages[i]))
+
+        # Clear the text box
+        pdf.delete('1.0', tk.END)
+
+        # Adding all the images to the text widget
+        for photo in photos:
+            pdf.image_create(tk.END, image=photo)
+
+            # For Separating the pages
+            pdf.insert(tk.END, '\n\n')
+
+            pdf.photos = photos  # used an attribute of "pdf" to store the references
 
 
 class MyLibrary(tk.Frame):
