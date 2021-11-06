@@ -2,19 +2,16 @@ import os
 import shutil
 import sqlite3
 import tkinter as tk
-from tkinter import SOLID, N, messagebox, W, LEFT, RIDGE, BOTH, RIGHT, TOP, filedialog, END, scrolledtext
+from tkinter import SOLID, N, messagebox, W, LEFT, RIDGE, BOTH, RIGHT, TOP, filedialog, END
 from PIL import Image, ImageTk
 from chatclient import Client
-import PyPDF2
 from tkPDFViewer import tkPDFViewer
 import random
 
 f = ('Arial', 14)
-ENCODING = 'utf-8'
 HOST = '127.0.0.1'
 PORT = 8080
 
-ran6 = random.sample(range(1, 21), 6)
 
 def readCoverFile(bookID):
     con = sqlite3.connect('userdata.db')
@@ -65,11 +62,14 @@ def readBookPath(bookID):
     bookPath = bookRecord[6]
     return bookPath
 
+
 coverList = []
 titleList = []
 authorList = []
 synopsisList = []
 pathList = []
+ran6 = random.sample(range(1, 21), 6)
+
 for x in ran6:
     coverList.append(readCoverFile(x))
     titleList.append(readBookTitle(x))
@@ -79,7 +79,6 @@ for x in ran6:
 
 
 class App(tk.Tk):
-
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         container = tk.Frame(self)
@@ -91,7 +90,9 @@ class App(tk.Tk):
 
         self.frames = {}
 
-        for F in (StartPage, LoginPage, RegistrationPage, MainPage, ProfilePage, UploadPage, DetailPage1, DetailPage2, DetailPage3, DetailPage4, DetailPage5, DetailPage6, MyLibrary,ReaderPage):
+        for F in (StartPage, LoginPage, RegistrationPage, MainPage, ProfilePage, UploadPage, DetailPage1, DetailPage2,
+                  DetailPage3, DetailPage4, DetailPage5, DetailPage6, MyLibrary, ReaderPage1, ReaderPage2, ReaderPage3,
+                  ReaderPage4, ReaderPage5, ReaderPage6):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
@@ -362,7 +363,8 @@ class MainPage(tk.Frame):
         tk.Frame.__init__(self, parent, bg='#BFCACA')
         self.controller = controller
 
-        categories = ['All Categories', 'Action and Adventure', 'Self Improvement', 'Mystery', 'Horror', 'Fantasy', 'Sci-Fi', 'Romance', 'Crime', 'History']
+        categories = ['All Categories', 'Action and Adventure', 'Self Improvement', 'Mystery', 'Horror', 'Fantasy',
+                      'Sci-Fi', 'Romance', 'Crime', 'History']
         mainFrame = tk.Frame(self)
         top_frame = tk.Frame(self, bg='#CCCCCC')
         sidebar_frame = tk.Frame(self, bg="#CCCCCC", borderwidth=2, relief=RIDGE)
@@ -501,7 +503,7 @@ class DetailPage1(tk.Frame):
         review_label.config(font=("Sans", 20, 'bold'))
         review_label.place(x=40, y=375)
 
-        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage))
+        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage1))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
         download_btn = tk.Button(self, width=15, text='Download')
 
@@ -516,7 +518,7 @@ class DetailPage1(tk.Frame):
 
         top_frame.place(x=426, y=20)
         header_label.place(x=40, y=20)
-        
+
 
 class DetailPage2(tk.Frame):
     def __init__(self, parent, controller):
@@ -551,7 +553,7 @@ class DetailPage2(tk.Frame):
         review_label.config(font=("Sans", 20, 'bold'))
         review_label.place(x=40, y=375)
 
-        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage))
+        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage2))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
         download_btn = tk.Button(self, width=15, text='Download')
 
@@ -566,7 +568,7 @@ class DetailPage2(tk.Frame):
 
         top_frame.place(x=426, y=20)
         header_label.place(x=40, y=20)
-        
+
 
 class DetailPage3(tk.Frame):
     def __init__(self, parent, controller):
@@ -601,7 +603,7 @@ class DetailPage3(tk.Frame):
         review_label.config(font=("Sans", 20, 'bold'))
         review_label.place(x=40, y=375)
 
-        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage))
+        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage3))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
         download_btn = tk.Button(self, width=15, text='Download')
 
@@ -651,7 +653,7 @@ class DetailPage4(tk.Frame):
         review_label.config(font=("Sans", 20, 'bold'))
         review_label.place(x=40, y=375)
 
-        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage))
+        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage4))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
         download_btn = tk.Button(self, width=15, text='Download')
 
@@ -701,7 +703,7 @@ class DetailPage5(tk.Frame):
         review_label.config(font=("Sans", 20, 'bold'))
         review_label.place(x=40, y=375)
 
-        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage))
+        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage5))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
         download_btn = tk.Button(self, width=15, text='Download')
 
@@ -751,7 +753,7 @@ class DetailPage6(tk.Frame):
         review_label.config(font=("Sans", 20, 'bold'))
         review_label.place(x=40, y=375)
 
-        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage))
+        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage6))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
         download_btn = tk.Button(self, width=15, text='Download')
 
@@ -768,7 +770,7 @@ class DetailPage6(tk.Frame):
         header_label.place(x=40, y=20)
 
 
-class ReaderPage(tk.Frame):
+class ReaderPage1(tk.Frame):
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent, bg='#BFCACA')
         top_frame = tk.Frame(self, bg='#CCCCCC')
@@ -788,18 +790,134 @@ class ReaderPage(tk.Frame):
         top_frame.place(x=426, y=20)
         header_label.place(x=40, y=20)
 
-        '''book_text = tk.scrolledtext.ScrolledText(self, height=35, width=98)
-        book_text.place(x=40, y=80)'''
+        v1 = tkPDFViewer.ShowPdf()
+        v2 = v1.pdf_view(self, pdf_location=pathList[0], width=98, height=40)
+        v2.place(x=40, y=80)
+
+
+class ReaderPage2(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg='#BFCACA')
+        top_frame = tk.Frame(self, bg='#CCCCCC')
+        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
+        header_label.config(font=("Sans", 20, 'bold'))
+
+        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
+        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
+        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+
+        main_btn.grid(row=0, column=0, padx=10, pady=5)
+        library_btn.grid(row=0, column=1, padx=10, pady=5)
+        profile_btn.grid(row=0, column=2, padx=10, pady=5)
+        logout_btn.grid(row=0, column=3, padx=10, pady=5)
+
+        top_frame.place(x=426, y=20)
+        header_label.place(x=40, y=20)
 
         v1 = tkPDFViewer.ShowPdf()
-        v2 = v1.pdf_view(self, pdf_location=pathList[0], width=98, height=35)
+        v2 = v1.pdf_view(self, pdf_location=pathList[1], width=98, height=40)
         v2.place(x=40, y=80)
-        '''pdf_file = PyPDF2.PdfFileReader(pathList[0])
-        pages = pdf_file.getNumPages()
-        for page_number in range(pages):
-            page = pdf_file.getPage(page_number)
-            content = page.extractText()
-            book_text.insert(1.0, content)'''
+
+
+class ReaderPage3(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg='#BFCACA')
+        top_frame = tk.Frame(self, bg='#CCCCCC')
+        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
+        header_label.config(font=("Sans", 20, 'bold'))
+
+        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
+        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
+        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+
+        main_btn.grid(row=0, column=0, padx=10, pady=5)
+        library_btn.grid(row=0, column=1, padx=10, pady=5)
+        profile_btn.grid(row=0, column=2, padx=10, pady=5)
+        logout_btn.grid(row=0, column=3, padx=10, pady=5)
+
+        top_frame.place(x=426, y=20)
+        header_label.place(x=40, y=20)
+
+        v1 = tkPDFViewer.ShowPdf()
+        v2 = v1.pdf_view(self, pdf_location=pathList[2], width=98, height=40)
+        v2.place(x=40, y=80)
+
+
+class ReaderPage4(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg='#BFCACA')
+        top_frame = tk.Frame(self, bg='#CCCCCC')
+        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
+        header_label.config(font=("Sans", 20, 'bold'))
+
+        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
+        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
+        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+
+        main_btn.grid(row=0, column=0, padx=10, pady=5)
+        library_btn.grid(row=0, column=1, padx=10, pady=5)
+        profile_btn.grid(row=0, column=2, padx=10, pady=5)
+        logout_btn.grid(row=0, column=3, padx=10, pady=5)
+
+        top_frame.place(x=426, y=20)
+        header_label.place(x=40, y=20)
+
+        v1 = tkPDFViewer.ShowPdf()
+        v2 = v1.pdf_view(self, pdf_location=pathList[3], width=98, height=40)
+        v2.place(x=40, y=80)
+
+
+class ReaderPage5(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg='#BFCACA')
+        top_frame = tk.Frame(self, bg='#CCCCCC')
+        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
+        header_label.config(font=("Sans", 20, 'bold'))
+
+        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
+        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
+        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+
+        main_btn.grid(row=0, column=0, padx=10, pady=5)
+        library_btn.grid(row=0, column=1, padx=10, pady=5)
+        profile_btn.grid(row=0, column=2, padx=10, pady=5)
+        logout_btn.grid(row=0, column=3, padx=10, pady=5)
+
+        top_frame.place(x=426, y=20)
+        header_label.place(x=40, y=20)
+
+        v1 = tkPDFViewer.ShowPdf()
+        v2 = v1.pdf_view(self, pdf_location=pathList[4], width=98, height=40)
+        v2.place(x=40, y=80)
+
+
+class ReaderPage6(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg='#BFCACA')
+        top_frame = tk.Frame(self, bg='#CCCCCC')
+        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
+        header_label.config(font=("Sans", 20, 'bold'))
+
+        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
+        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
+        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+
+        main_btn.grid(row=0, column=0, padx=10, pady=5)
+        library_btn.grid(row=0, column=1, padx=10, pady=5)
+        profile_btn.grid(row=0, column=2, padx=10, pady=5)
+        logout_btn.grid(row=0, column=3, padx=10, pady=5)
+
+        top_frame.place(x=426, y=20)
+        header_label.place(x=40, y=20)
+
+        v1 = tkPDFViewer.ShowPdf()
+        v2 = v1.pdf_view(self, pdf_location=pathList[5], width=98, height=40)
+        v2.place(x=40, y=80)
 
 
 class MyLibrary(tk.Frame):
@@ -878,7 +996,8 @@ class UploadPage(tk.Frame):
         con.commit()
 
         tk.Frame.__init__(self, parent, bg='#BFCACA')
-        categories = ['Action and Adventure', 'Self Improvement', 'Mystery', 'Horror', 'Fantasy', 'Sci-Fi', 'Romance', 'Crime', 'History']
+        categories = ['Action and Adventure', 'Self Improvement', 'Mystery', 'Horror', 'Fantasy', 'Sci-Fi', 'Romance',
+                      'Crime', 'History']
         variable = tk.StringVar()
         variable.set(categories[0])
 
@@ -1022,13 +1141,13 @@ class UploadPage(tk.Frame):
             book_link.insert(END, self.filename)
 
         def choose_cover():
-            self.covername = filedialog.askopenfilename(initialdir='../', title='Select a file',
-                                                        filetypes=[('Image files', '*.jpg *jpeg *.png')])
-            cover_link.insert(END, self.covername)
+            self.cover_name = filedialog.askopenfilename(initialdir='../', title='Select a file',
+                                                         filetypes=[('Image files', '*.jpg *jpeg *.png')])
+            cover_link.insert(END, self.cover_name)
 
 
 app = App()
-app.geometry('800x600')
+app.geometry('800x650')
 app.title('eBook Reader')
 app.resizable(False, False)
 app.mainloop()
