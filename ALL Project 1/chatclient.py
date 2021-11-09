@@ -32,9 +32,9 @@ class Client:
     def gui_loop(self):
         self.win = tkinter.Tk()
         self.win.title("eBook Reader - Chat")
-        self.win.configure(bg="#F44336")
+        self.win.configure(bg="#BFCACA")
 
-        self.chat_label = tkinter.Label(self.win, text="Chat:", bg="lightgray")
+        self.chat_label = tkinter.Label(self.win, text="Chat:", bg="#BFCACA")
         self.chat_label.config(font=("Arial", 12))
         self.chat_label.pack(padx=20, pady=5)
 
@@ -42,7 +42,7 @@ class Client:
         self.text_area.pack(padx=20, pady=5)
         self.text_area.config(state='disabled')
 
-        self.msg_label = tkinter.Label(self.win, text="Message:", bg="lightgray")
+        self.msg_label = tkinter.Label(self.win, text="Message:", bg="#BFCACA")
         self.msg_label.config(font=("Arial", 12))
         self.msg_label.pack(padx=20, pady=5)
 

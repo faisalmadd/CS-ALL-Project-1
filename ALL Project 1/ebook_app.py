@@ -7,25 +7,10 @@ from PIL import Image, ImageTk
 from pdf2image import convert_from_path
 from chatclient import Client
 from db_handle import *
-import random
 
 f = ('Arial', 14)
 HOST = '127.0.0.1'
 PORT = 8080
-
-coverList = []
-titleList = []
-authorList = []
-synopsisList = []
-pathList = []
-ran6 = random.sample(range(1, 21), 6)
-
-for x in ran6:
-    coverList.append(readCoverFile(x))
-    titleList.append(readBookTitle(x))
-    authorList.append(readBookAuthor(x))
-    synopsisList.append(readBookSynopsis(x))
-    pathList.append(readBookPath(x))
 
 
 class App(tk.Tk):
@@ -455,7 +440,7 @@ class DetailPage1(tk.Frame):
 
         read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage1))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
-        download_btn = tk.Button(self, width=15, text='Download')
+        download_btn = tk.Button(self, width=15, text='Download', command=lambda: download_book(0))
 
         read_btn.place(x=625, y=120)
         add_fav.place(x=625, y=160)
@@ -505,7 +490,7 @@ class DetailPage2(tk.Frame):
 
         read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage2))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
-        download_btn = tk.Button(self, width=15, text='Download')
+        download_btn = tk.Button(self, width=15, text='Download', command=lambda: download_book(1))
 
         read_btn.place(x=625, y=120)
         add_fav.place(x=625, y=160)
@@ -555,7 +540,7 @@ class DetailPage3(tk.Frame):
 
         read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage3))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
-        download_btn = tk.Button(self, width=15, text='Download')
+        download_btn = tk.Button(self, width=15, text='Download', command=lambda: download_book(2))
 
         read_btn.place(x=625, y=120)
         add_fav.place(x=625, y=160)
@@ -605,7 +590,7 @@ class DetailPage4(tk.Frame):
 
         read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage4))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
-        download_btn = tk.Button(self, width=15, text='Download')
+        download_btn = tk.Button(self, width=15, text='Download', command=lambda: download_book(3))
 
         read_btn.place(x=625, y=120)
         add_fav.place(x=625, y=160)
@@ -655,7 +640,7 @@ class DetailPage5(tk.Frame):
 
         read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage5))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
-        download_btn = tk.Button(self, width=15, text='Download')
+        download_btn = tk.Button(self, width=15, text='Download', command=lambda: download_book(4))
 
         read_btn.place(x=625, y=120)
         add_fav.place(x=625, y=160)
@@ -705,7 +690,7 @@ class DetailPage6(tk.Frame):
 
         read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage6))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
-        download_btn = tk.Button(self, width=15, text='Download')
+        download_btn = tk.Button(self, width=15, text='Download', command=lambda: download_book(5))
 
         read_btn.place(x=625, y=120)
         add_fav.place(x=625, y=160)

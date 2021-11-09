@@ -1,4 +1,7 @@
+import random
+import shutil
 import sqlite3
+from tkinter import filedialog, messagebox
 
 
 def readCoverFile(bookID):
@@ -50,3 +53,24 @@ def readBookPath(bookID):
     bookPath = bookRecord[6]
     return bookPath
 
+
+coverList = []
+titleList = []
+authorList = []
+synopsisList = []
+pathList = []
+ran6 = random.sample(range(1, 21), 6)
+
+
+def download_book(idx):
+    book_path = pathList[idx]
+    folder = filedialog.askdirectory()
+    shutil.copy(book_path, folder)
+    messagebox.showinfo('Download Status', 'Book downloaded successfully!')
+
+for x in ran6:
+    coverList.append(readCoverFile(x))
+    titleList.append(readBookTitle(x))
+    authorList.append(readBookAuthor(x))
+    synopsisList.append(readBookSynopsis(x))
+    pathList.append(readBookPath(x))
