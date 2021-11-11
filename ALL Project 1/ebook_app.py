@@ -13,6 +13,19 @@ HOST = '127.0.0.1'
 PORT = 8080
 
 
+def logged_in_user(username):
+    con = sqlite3.connect('userdata.db')
+    cursor = con.cursor()
+    query = "SELECT * from record WHERE email= ?"
+    cursor.execute(query, (username,))
+    userRecord = cursor.fetchone()
+    return userRecord
+
+
+user = ['user']
+login_details = logged_in_user(user[0])
+
+
 class App(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
@@ -104,6 +117,7 @@ class LoginPage(tk.Frame):
         login_frame.place(x=191, y=180)
 
         def login_response():
+            global login_details
             try:
                 con = sqlite3.connect('userdata.db')
                 c = con.cursor()
@@ -114,20 +128,23 @@ class LoginPage(tk.Frame):
             except Exception as ep:
                 messagebox.showerror('', ep)
 
-            uname = login_name.get()
-            upwd = login_password.get()
+            email = login_name.get()
+            password = login_password.get()
             check_counter = 0
-            if uname == "":
+            if email == "":
                 warn = "Username can't be empty"
             else:
                 check_counter += 1
-            if upwd == "":
+            if password == "":
                 warn = "Password can't be empty"
             else:
                 check_counter += 1
             if check_counter == 2:
-                if uname == username and upwd == pwd:
+                if email == username and password == pwd:
                     messagebox.showinfo('Login Status', 'Logged in Successfully!')
+                    user.insert(0, str(login_name.get()))
+                    login_details = list(logged_in_user(user[0]))
+                    print(login_details)
                     login_name.delete(0, 'end')
                     login_password.delete(0, 'end')
                     controller.show_frame(MainPage)
@@ -441,6 +458,32 @@ class DetailPage1(tk.Frame):
         read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.show_frame(ReaderPage1))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
         download_btn = tk.Button(self, width=15, text='Download', command=lambda: download_book(0))
+
+        reviewFrame = tk.Frame(self, bg='#BFCACA')
+        ratingFrame = tk.Frame(reviewFrame)
+        review_entry = tk.Entry(reviewFrame, width=55, font=f)
+        review_entry.pack(side=LEFT, fill=BOTH, expand=1)
+
+        var = tk.StringVar()
+        var.set('1')
+
+        one_rb = tk.Radiobutton(ratingFrame, text='1', bg='#CABFBF', variable=var, value='1', font=f)
+        two_rb = tk.Radiobutton(ratingFrame, text='2', bg='#CABFBF', variable=var, value='2', font=f)
+        three_rb = tk.Radiobutton(ratingFrame, text='3', bg='#CABFBF', variable=var, value='3', font=f)
+        four_rb = tk.Radiobutton(ratingFrame, text='4', bg='#CABFBF', variable=var, value='4', font=f)
+        five_rb = tk.Radiobutton(ratingFrame, text='5', bg='#CABFBF', variable=var, value='5', font=f)
+        one_rb.pack(expand=True, side=LEFT)
+        two_rb.pack(expand=True, side=LEFT)
+        three_rb.pack(expand=True, side=LEFT)
+        four_rb.pack(expand=True, side=LEFT)
+        five_rb.pack(expand=True, side=LEFT)
+
+        enter_button = tk.Button(reviewFrame, text='Enter')
+        review_entry.grid(row=0, column=0, padx=10, pady=5)
+        ratingFrame.grid(row=0, column=1, padx=10, pady=5)
+        enter_button.grid(row=0, column=2, padx=10, pady=5)
+
+        reviewFrame.place(x=32, y=410)
 
         read_btn.place(x=625, y=120)
         add_fav.place(x=625, y=160)
@@ -1043,9 +1086,64 @@ class MyLibrary(tk.Frame):
         top_frame.place(x=426, y=20)
         header_label.place(x=40, y=20)
 
+        book1 = Image.open(coverList[0])
+        book1 = book1.resize((131, 170), Image.ANTIALIAS)
+        book1 = ImageTk.PhotoImage(book1)
+        book1_label = tk.Label(self, image=book1)
+        book1_label.image = book1
+        book1_label.place(x=225, y=160)
+        book1_btn = tk.Button(self, width=15, text='View Book')
+        book1_btn.place(x=225, y=345)
+
+        book2 = Image.open(coverList[1])
+        book2 = book2.resize((131, 170), Image.ANTIALIAS)
+        book2 = ImageTk.PhotoImage(book2)
+        book2_label = tk.Label(self, image=book2)
+        book2_label.image = book2
+        book2_label.place(x=400, y=160)
+        book2_btn = tk.Button(self, width=15, text='View Book')
+        book2_btn.place(x=400, y=345)
+
+        book3 = Image.open(coverList[2])
+        book3 = book3.resize((131, 170), Image.ANTIALIAS)
+        book3 = ImageTk.PhotoImage(book3)
+        book3_label = tk.Label(self, image=book3)
+        book3_label.image = book3
+        book3_label.place(x=575, y=160)
+        book3_btn = tk.Button(self, width=15, text='View Book')
+        book3_btn.place(x=575, y=345)
+
+        book4 = Image.open(coverList[3])
+        book4 = book4.resize((131, 170), Image.ANTIALIAS)
+        book4 = ImageTk.PhotoImage(book4)
+        book4_label = tk.Label(self, image=book4)
+        book4_label.image = book4
+        book4_label.place(x=225, y=390)
+        book4_btn = tk.Button(self, width=15, text='View Book')
+        book4_btn.place(x=225, y=575)
+
+        book5 = Image.open(coverList[4])
+        book5 = book5.resize((131, 170), Image.ANTIALIAS)
+        book5 = ImageTk.PhotoImage(book5)
+        book5_label = tk.Label(self, image=book5)
+        book5_label.image = book5
+        book5_label.place(x=400, y=390)
+        book5_btn = tk.Button(self, width=15, text='View Book')
+        book5_btn.place(x=400, y=575)
+
+        book6 = Image.open(coverList[5])
+        book6 = book6.resize((131, 170), Image.ANTIALIAS)
+        book6 = ImageTk.PhotoImage(book6)
+        book6_label = tk.Label(self, image=book6)
+        book6_label.image = book6
+        book6_label.place(x=575, y=390)
+        book6_btn = tk.Button(self, width=15, text='View Book')
+        book6_btn.place(x=575, y=575)
+
 
 class ProfilePage(tk.Frame):
     def __init__(self, parent, controller):
+        global login_details
         tk.Frame.__init__(self, parent, bg='#BFCACA')
         top_frame = tk.Frame(self, bg='#CCCCCC')
         header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
@@ -1065,11 +1163,14 @@ class ProfilePage(tk.Frame):
         pic_label.place(x=40, y=80)
 
         # details
-        name_label = tk.Label(self, text="Welcome, User!", bg='#BFCACA')
+        name_label = tk.Label(self, text=("Welcome, " + login_details[1] + "!"), bg='#BFCACA')
         name_label.config(font=('courier', 20))
         name_label.place(x=170, y=100)
 
-        edit_profile = tk.Button(self, text="Edit Profile")
+        details_label = tk.Label(self, text="Profile Details", font=('Verdana', 18), bg='#BFCACA')
+        details_label.place(x=40, y=200)
+
+        edit_profile = tk.Button(self, text="Edit Profile", command=lambda: edit_profile())
         edit_profile.place(x=180, y=140)
 
         main_btn.grid(row=0, column=0, padx=10, pady=5)
@@ -1079,6 +1180,74 @@ class ProfilePage(tk.Frame):
 
         top_frame.place(x=426, y=20)
         header_label.place(x=40, y=20)
+
+        # user details
+        mainFrame = tk.Frame(self, bd=0, bg='#CCCCCC', relief=SOLID, padx=10, pady=10)
+
+        tk.Label(mainFrame, text="Name", bg='#CCCCCC', font=f).grid(row=0, column=0, sticky=W, pady=10)
+        tk.Label(mainFrame, text="Email", bg='#CCCCCC', font=f).grid(row=1, column=0, sticky=W, pady=10)
+        tk.Label(mainFrame, text="Number", bg='#CCCCCC', font=f).grid(row=2, column=0, sticky=W, pady=10)
+        tk.Label(mainFrame, text="Gender", bg='#CCCCCC', font=f).grid(row=3, column=0, sticky=W, pady=10)
+        tk.Label(mainFrame, text="Country", bg='#CCCCCC', font=f).grid(row=4, column=0, sticky=W, pady=10)
+
+        gender_frame = tk.LabelFrame(mainFrame, bg='#CCCCCC', padx=10, pady=10, )
+        usr_name = tk.Entry(mainFrame, font=f)
+        usr_name.insert(0, login_details[1])
+        usr_name.config(state='disable')
+        usr_email = tk.Entry(mainFrame, font=f)
+        usr_email.insert(0, login_details[2])
+        usr_email.config(state='disable')
+        usr_mobile = tk.Entry(mainFrame, font=f)
+        usr_mobile.insert(0, login_details[3])
+        usr_mobile.config(state='disable')
+
+        var = tk.StringVar()
+        var.set('male')
+
+        countries = []
+        variable = tk.StringVar()
+        world = open('countries.txt', 'r')
+        for country in world:
+            country = country.rstrip('\n')
+            countries.append(country)
+        variable.set(countries[106])
+
+        male_rb = tk.Radiobutton(gender_frame, text='Male', bg='#CCCCCC', variable=var, value='male',
+                                 font=('Times', 10))
+        female_rb = tk.Radiobutton(gender_frame, text='Female', bg='#CCCCCC', variable=var, value='female',
+                                   font=('Times', 10))
+
+        usr_country = tk.OptionMenu(mainFrame, variable, *countries)
+        usr_country.config(width=15, font=('Times', 12), state='disable')
+
+        usr_name.grid(row=0, column=1, pady=10, padx=20)
+        usr_email.grid(row=1, column=1, pady=10, padx=20)
+        usr_mobile.grid(row=2, column=1, pady=10, padx=20)
+        usr_country.grid(row=4, column=1, pady=10, padx=20)
+        mainFrame.place(x=40, y=250)
+
+        gender_frame.grid(row=3, column=1, pady=10, padx=20)
+        male_rb.pack(expand=True, side=LEFT)
+        female_rb.pack(expand=True, side=LEFT)
+
+        save_btn = tk.Button(self, text='Save Changes', command=lambda: edit_record())
+
+        def edit_profile():
+            usr_name.config(state='normal')
+            usr_email.config(state='normal')
+            usr_mobile.config(state='normal')
+            usr_country.config(state='normal')
+
+            save_btn.pack()
+            save_btn.place(x=130, y=535)
+
+        def edit_record():
+            usr_name.config(state='disable')
+            usr_email.config(state='disable')
+            usr_mobile.config(state='disable')
+            usr_country.config(state='disable')
+
+            save_btn.pack_forget()
 
 
 class UploadPage(tk.Frame):

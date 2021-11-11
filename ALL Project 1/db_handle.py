@@ -54,11 +54,13 @@ def readBookPath(bookID):
     return bookPath
 
 
+
 coverList = []
 titleList = []
 authorList = []
 synopsisList = []
 pathList = []
+
 ran6 = random.sample(range(1, 21), 6)
 
 
@@ -67,6 +69,7 @@ def download_book(idx):
     folder = filedialog.askdirectory()
     shutil.copy(book_path, folder)
     messagebox.showinfo('Download Status', 'Book downloaded successfully!')
+
 
 for x in ran6:
     coverList.append(readCoverFile(x))
