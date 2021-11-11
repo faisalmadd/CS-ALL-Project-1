@@ -11,74 +11,7 @@ from db_handle import *
 f = ('Arial', 14)
 HOST = '127.0.0.1'
 PORT = 8080
-pop_path = "/usr/local/Cellar/poppler/21.11.0/bin"  #need this to work on mac for some reason
 
-
-def resetMainPage():
-    randomLists()
-    newBook1 = Image.open(coverList[0])
-    newBook1 = newBook1.resize((131, 170), Image.ANTIALIAS)
-    Book1 = ImageTk.PhotoImage(newBook1)
-    book1_label.configure(image = Book1)
-    book1_label.image = Book1
-
-    newBook2 = Image.open(coverList[1])
-    newBook2 = newBook2.resize((131, 170), Image.ANTIALIAS)
-    Book2 = ImageTk.PhotoImage(newBook2)
-    book2_label.configure(image = Book2)
-    book2_label.image = Book2
-
-    newBook3 = Image.open(coverList[2])
-    newBook3 = newBook3.resize((131, 170), Image.ANTIALIAS)
-    Book3 = ImageTk.PhotoImage(newBook3)
-    book3_label.configure(image = Book3)
-    book3_label.image = Book3
-
-    newBook4 = Image.open(coverList[3])
-    newBook4 = newBook4.resize((131, 170), Image.ANTIALIAS)
-    Book4 = ImageTk.PhotoImage(newBook4)
-    book4_label.configure(image = Book4)
-    book4_label.image = Book4
-
-    newBook5 = Image.open(coverList[4])
-    newBook5 = newBook5.resize((131, 170), Image.ANTIALIAS)
-    Book5 = ImageTk.PhotoImage(newBook5)
-    book5_label.configure(image = Book5)
-    book5_label.image = Book5
-
-    newBook6 = Image.open(coverList[5])
-    newBook6 = newBook6.resize((131, 170), Image.ANTIALIAS)
-    Book6 = ImageTk.PhotoImage(newBook6)
-    book6_label.configure(image = Book6)
-    book6_label.image = Book6
-
-def resetDetailsPage(x):
-    newBookD = Image.open(coverList[x])
-    newBookD = newBookD.resize((131, 170), Image.ANTIALIAS)
-    BookD = ImageTk.PhotoImage(newBookD)
-    bookD_label.configure(image = BookD)
-    bookD_label.image = BookD
-    author_label.configure(text = authorList[x])
-    title_label.configure(text = titleList[x])
-    synopsis_label.configure(text = synopsisList[x])
-
-def resetReader(x):
-    pages = convert_from_path(pathList[x], size=(800, 900), poppler_path = pop_path)
-
-    newPhotos = []
-
-    for i in range(len(pages)):
-        newPhotos.append(ImageTk.PhotoImage(pages[i]))
-
-    pdf.delete('1.0', tk.END)
-
-    for photo in newPhotos:
-        pdf.image_create(tk.END, image=photo)
-
-        pdf.insert(tk.END, '\n\n')
-
-        pdf.newPhotos = newPhotos
-        
 
 def logged_in_user(username):
     con = sqlite3.connect('userdata.db')
@@ -99,36 +32,19 @@ class App(tk.Tk):
         container = tk.Frame(self)
 
         container.pack(side="top", fill="both", expand=True)
-
         container.grid_rowconfigure(0, weight=1)
         container.grid_columnconfigure(0, weight=1)
 
         self.frames = {}
 
-        for F in (StartPage, LoginPage, RegistrationPage, MainPage, ProfilePage, UploadPage, DetailPage, MyLibrary, ReaderPage):
+        for F in (StartPage, LoginPage, RegistrationPage, MainPage, ProfilePage, UploadPage, MyLibrary):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
 
-        self.show_frame(StartPage)
+        self.show_frame(LoginPage)
 
     def show_frame(self, cont):
-        frame = self.frames[cont]
-        frame.tkraise()
-
-    def refreshMain(self, cont):
-        resetMainPage()
-        frame = self.frames[cont]
-        frame.tkraise()
-
-    def refreshDetail(self, cont, x):
-        resetDetailsPage(x)
-        setCurrentBook(x)
-        frame = self.frames[cont]
-        frame.tkraise()
-
-    def refreshReader(self, cont, x):
-        resetReader(x)
         frame = self.frames[cont]
         frame.tkraise()
 
@@ -226,6 +142,7 @@ class LoginPage(tk.Frame):
                     user.insert(0, str(login_name.get()))
                     login_details = list(logged_in_user(user[0]))
                     print(login_details)
+
                     login_name.delete(0, 'end')
                     login_password.delete(0, 'end')
                     controller.show_frame(MainPage)
@@ -408,529 +325,6 @@ class MainPage(tk.Frame):
         book1 = Image.open(coverList[0])
         book1 = book1.resize((131, 170), Image.ANTIALIAS)
         book1 = ImageTk.PhotoImage(book1)
-        global book1_label
-        book1_label = tk.Label(self, image=book1)
-        book1_label.image = book1
-        book1_label.place(x=225, y=160)
-        book1_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 0))
-        book1_btn.place(x=225, y=345)
-
-        book2 = Image.open(coverList[1])
-        book2 = book2.resize((131, 170), Image.ANTIALIAS)
-        book2 = ImageTk.PhotoImage(book2)
-        global book2_label
-        book2_label = tk.Label(self, image=book2)
-        book2_label.image = book2
-        book2_label.place(x=400, y=160)
-        book2_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 1))
-        book2_btn.place(x=400, y=345)
-
-        book3 = Image.open(coverList[2])
-        book3 = book3.resize((131, 170), Image.ANTIALIAS)
-        book3 = ImageTk.PhotoImage(book3)
-        global book3_label
-        book3_label = tk.Label(self, image=book3)
-        book3_label.image = book3
-        book3_label.place(x=575, y=160)
-        book3_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 2))
-        book3_btn.place(x=575, y=345)
-
-        book4 = Image.open(coverList[3])
-        book4 = book4.resize((131, 170), Image.ANTIALIAS)
-        book4 = ImageTk.PhotoImage(book4)
-        global book4_label
-        book4_label = tk.Label(self, image=book4)
-        book4_label.image = book4
-        book4_label.place(x=225, y=390)
-        book4_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 3))
-        book4_btn.place(x=225, y=575)
-
-        book5 = Image.open(coverList[4])
-        book5 = book5.resize((131, 170), Image.ANTIALIAS)
-        book5 = ImageTk.PhotoImage(book5)
-        global book5_label
-        book5_label = tk.Label(self, image=book5)
-        book5_label.image = book5
-        book5_label.place(x=400, y=390)
-        book5_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 4))
-        book5_btn.place(x=400, y=575)
-
-        book6 = Image.open(coverList[5])
-        book6 = book6.resize((131, 170), Image.ANTIALIAS)
-        book6 = ImageTk.PhotoImage(book6)
-        global book6_label
-        book6_label = tk.Label(self, image=book6)
-        book6_label.image = book6
-        book6_label.place(x=575, y=390)
-        book6_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 5))
-        book6_btn.place(x=575, y=575)
-
-        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
-        header_label.config(font=("sans", 20, 'bold'))
-
-        featured_lbl = tk.Label(self, text="Featured Reads", bg='#BFCACA')
-        featured_lbl.config(font=("sans", 18, 'italic'))
-
-        main_btn = tk.Button(top_frame, text='Main Page', state='disabled')
-        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
-        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
-        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
-
-        search_entry = tk.Entry(mainFrame, width=67, font=f)
-        search_entry.pack(side=LEFT, fill=BOTH, expand=1)
-        search_entry.insert(0, "Search eBooks by title, author, or ISBN")
-
-        category_filter = tk.OptionMenu(mainFrame, variable, *categories)
-        category_filter.pack(side=LEFT)
-
-        search_button = tk.Button(mainFrame, text='Search')
-        search_button.pack(side=RIGHT)
-        mainFrame.pack(side=TOP)
-
-        recommendations_btn = tk.Button(sidebar_frame, text='Recommendations')
-        categories_btn = tk.Button(sidebar_frame, text='Categories')
-        chat_btn = tk.Button(sidebar_frame, text='World Chat', command=lambda: Client(HOST, PORT))
-        upload_btn = tk.Button(sidebar_frame, text='Upload an eBook', command=lambda: controller.show_frame(UploadPage))
-
-        main_btn.grid(row=0, column=0, padx=10, pady=5)
-        library_btn.grid(row=0, column=1, padx=10, pady=5)
-        profile_btn.grid(row=0, column=2, padx=10, pady=5)
-        logout_btn.grid(row=0, column=3, padx=10, pady=5)
-
-        recommendations_btn.grid(row=0, column=0, padx=10, pady=5)
-        categories_btn.grid(row=1, column=0, padx=10, pady=5)
-        chat_btn.grid(row=3, column=0, padx=10, pady=5)
-        upload_btn.grid(row=2, column=0, padx=10, pady=5)
-
-        mainFrame.place(x=41, y=70)
-        top_frame.place(x=426, y=20)
-        sidebar_frame.place(x=40, y=120)
-        header_label.place(x=40, y=20)
-        featured_lbl.place(x=225, y=120)
-
-
-class DetailPage(tk.Frame):
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, bg='#BFCACA')
-        top_frame = tk.Frame(self, bg='#CCCCCC')
-        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
-        header_label.config(font=("Sans", 20, 'bold'))
-
-        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.refreshMain(MainPage))
-        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
-        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
-        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
-
-        bookD = Image.open(coverList[0])
-        bookD = bookD.resize((131, 170), Image.ANTIALIAS)
-        bookD = ImageTk.PhotoImage(bookD)
-        global bookD_label
-        bookD_label = tk.Label(self, image=bookD)
-        bookD_label.image = bookD
-        bookD_label.place(x=40, y=80)
-
-        global title_label
-        title_label = tk.Label(self, bg='#BFCACA', text=titleList[0])
-        title_label.config(font=("Sans", 20, 'bold'))
-        global author_label
-        author_label = tk.Label(self, bg='#BFCACA', text=authorList[0])
-        author_label.config(font=("Sans", 20, 'bold'))
-        global synopsis_label
-        synopsis_label = tk.Message(self, bg='#BFCACA', width=400, text=synopsisList[0])
-        synopsis_label.config(font=("Sans", 16, 'italic'))
-        title_label.place(x=200, y=80)
-        author_label.place(x=200, y=110)
-        synopsis_label.place(x=200, y=150)
-
-        review_label = tk.Label(self, bg='#BFCACA', text='Ratings & Reviews')
-        review_label.config(font=("Sans", 20, 'bold'))
-        review_label.place(x=40, y=375)
-
-        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.refreshReader(ReaderPage, currentBook[0]))
-        add_fav = tk.Button(self, width=15, text='Add to My Library')
-        download_btn = tk.Button(self, width=15, text='Download', command=lambda: download_book(0))
-
-        reviewFrame = tk.Frame(self, bg='#BFCACA')
-        ratingFrame = tk.Frame(reviewFrame)
-        review_entry = tk.Entry(reviewFrame, width=55, font=f)
-        review_entry.pack(side=LEFT, fill=BOTH, expand=1)
-
-        var = tk.StringVar()
-        var.set('1')
-
-        one_rb = tk.Radiobutton(ratingFrame, text='1', bg='#CABFBF', variable=var, value='1', font=f)
-        two_rb = tk.Radiobutton(ratingFrame, text='2', bg='#CABFBF', variable=var, value='2', font=f)
-        three_rb = tk.Radiobutton(ratingFrame, text='3', bg='#CABFBF', variable=var, value='3', font=f)
-        four_rb = tk.Radiobutton(ratingFrame, text='4', bg='#CABFBF', variable=var, value='4', font=f)
-        five_rb = tk.Radiobutton(ratingFrame, text='5', bg='#CABFBF', variable=var, value='5', font=f)
-        one_rb.pack(expand=True, side=LEFT)
-        two_rb.pack(expand=True, side=LEFT)
-        three_rb.pack(expand=True, side=LEFT)
-        four_rb.pack(expand=True, side=LEFT)
-        five_rb.pack(expand=True, side=LEFT)
-
-        enter_button = tk.Button(reviewFrame, text='Enter')
-        review_entry.grid(row=0, column=0, padx=10, pady=5)
-        ratingFrame.grid(row=0, column=1, padx=10, pady=5)
-        enter_button.grid(row=0, column=2, padx=10, pady=5)
-
-        reviewFrame.place(x=32, y=410)
-
-        read_btn.place(x=625, y=120)
-        add_fav.place(x=625, y=160)
-        download_btn.place(x=625, y=200)
-
-        main_btn.grid(row=0, column=0, padx=10, pady=5)
-        library_btn.grid(row=0, column=1, padx=10, pady=5)
-        profile_btn.grid(row=0, column=2, padx=10, pady=5)
-        logout_btn.grid(row=0, column=3, padx=10, pady=5)
-
-        top_frame.place(x=426, y=20)
-        header_label.place(x=40, y=20)
-
-
-class ReaderPage(tk.Frame):
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, bg='#BFCACA')
-        top_frame = tk.Frame(self, bg='#CCCCCC')
-        reader_frame = tk.Frame(self, bg='#CCCCCC')
-        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
-        header_label.config(font=("Sans", 20, 'bold'))
-
-        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.refreshMain(MainPage))
-        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
-        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
-        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
-
-        main_btn.grid(row=0, column=0, padx=10, pady=5)
-        library_btn.grid(row=0, column=1, padx=10, pady=5)
-        profile_btn.grid(row=0, column=2, padx=10, pady=5)
-        logout_btn.grid(row=0, column=3, padx=10, pady=5)
-
-        top_frame.place(x=426, y=15)
-        reader_frame.place(x=10, y=65)
-        header_label.place(x=40, y=20)
-
-        # PDF is converted to a list of images
-        pages = convert_from_path(pathList[0], size=(800, 900), poppler_path = pop_path) #needed pop_path to run
-
-        # Empty list for storing images
-        photos = []
-
-        tab_control = ttk.Notebook(reader_frame)
-        tab_control.place(x=10, y=10, height=600, width=800)
-        scroll_y = tk.Scrollbar(reader_frame, orient=tk.VERTICAL)
-        scroll_y.grid(row=0, column=1, sticky='ns')
-        global pdf
-        pdf = tk.Text(reader_frame, height=43, width=108, yscrollcommand=scroll_y.set, bg="grey")
-        pdf.grid(row=0, column=0)
-        scroll_y.config(command=pdf.yview)
-
-        # Storing the converted images into list
-        for i in range(len(pages)):
-            photos.append(ImageTk.PhotoImage(pages[i]))
-
-        # Clear the text box
-        pdf.delete('1.0', tk.END)
-
-        # Adding all the images to the text widget
-        for photo in photos:
-            pdf.image_create(tk.END, image=photo)
-
-            # For Separating the pages
-            pdf.insert(tk.END, '\n\n')
-
-            pdf.photos = photos  # used an attribute of "pdf" to store the references
-
-
-##class ReaderPage2(tk.Frame):
-##    def __init__(self, parent, controller):
-##        tk.Frame.__init__(self, parent, bg='#BFCACA')
-##        top_frame = tk.Frame(self, bg='#CCCCCC')
-##        reader_frame = tk.Frame(self, bg='#CCCCCC')
-##        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
-##        header_label.config(font=("Sans", 20, 'bold'))
-##
-##        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
-##        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
-##        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
-##        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
-##
-##        main_btn.grid(row=0, column=0, padx=10, pady=5)
-##        library_btn.grid(row=0, column=1, padx=10, pady=5)
-##        profile_btn.grid(row=0, column=2, padx=10, pady=5)
-##        logout_btn.grid(row=0, column=3, padx=10, pady=5)
-##
-##        top_frame.place(x=426, y=15)
-##        reader_frame.place(x=10, y=65)
-##        header_label.place(x=40, y=20)
-##
-##        # PDF is converted to a list of images
-##        pages = convert_from_path(pathList[1], size=(800, 900), poppler_path = pop_path)
-##
-##        # Empty list for storing images
-##        photos = []
-##
-##        tab_control = ttk.Notebook(reader_frame)
-##        tab_control.place(x=10, y=10, height=600, width=800)
-##        scroll_y = tk.Scrollbar(reader_frame, orient=tk.VERTICAL)
-##        scroll_y.grid(row=0, column=1, sticky='ns')
-##        pdf = tk.Text(reader_frame, height=43, width=108, yscrollcommand=scroll_y.set, bg="grey")
-##        pdf.grid(row=0, column=0)
-##        scroll_y.config(command=pdf.yview)
-##
-##        # Storing the converted images into list
-##        for i in range(len(pages)):
-##            photos.append(ImageTk.PhotoImage(pages[i]))
-##
-##        # Clear the text box
-##        pdf.delete('1.0', tk.END)
-##
-##        # Adding all the images to the text widget
-##        for photo in photos:
-##            pdf.image_create(tk.END, image=photo)
-##
-##            # For Separating the pages
-##            pdf.insert(tk.END, '\n\n')
-##
-##            pdf.photos = photos  # used an attribute of "pdf" to store the references
-##
-##
-##class ReaderPage3(tk.Frame):
-##    def __init__(self, parent, controller):
-##        tk.Frame.__init__(self, parent, bg='#BFCACA')
-##        top_frame = tk.Frame(self, bg='#CCCCCC')
-##        reader_frame = tk.Frame(self, bg='#CCCCCC')
-##        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
-##        header_label.config(font=("Sans", 20, 'bold'))
-##
-##        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
-##        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
-##        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
-##        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
-##
-##        main_btn.grid(row=0, column=0, padx=10, pady=5)
-##        library_btn.grid(row=0, column=1, padx=10, pady=5)
-##        profile_btn.grid(row=0, column=2, padx=10, pady=5)
-##        logout_btn.grid(row=0, column=3, padx=10, pady=5)
-##
-##        top_frame.place(x=426, y=15)
-##        reader_frame.place(x=10, y=65)
-##        header_label.place(x=40, y=20)
-##
-##        # PDF is converted to a list of images
-##        pages = convert_from_path(pathList[2], size=(800, 900), poppler_path = pop_path)
-##
-##        # Empty list for storing images
-##        photos = []
-##
-##        tab_control = ttk.Notebook(reader_frame)
-##        tab_control.place(x=10, y=10, height=600, width=800)
-##        scroll_y = tk.Scrollbar(reader_frame, orient=tk.VERTICAL)
-##        scroll_y.grid(row=0, column=1, sticky='ns')
-##        pdf = tk.Text(reader_frame, height=43, width=108, yscrollcommand=scroll_y.set, bg="grey")
-##        pdf.grid(row=0, column=0)
-##        scroll_y.config(command=pdf.yview)
-##
-##        # Storing the converted images into list
-##        for i in range(len(pages)):
-##            photos.append(ImageTk.PhotoImage(pages[i]))
-##
-##        # Clear the text box
-##        pdf.delete('1.0', tk.END)
-##
-##        # Adding all the images to the text widget
-##        for photo in photos:
-##            pdf.image_create(tk.END, image=photo)
-##
-##            # For Separating the pages
-##            pdf.insert(tk.END, '\n\n')
-##
-##            pdf.photos = photos  # used an attribute of "pdf" to store the references
-##
-##
-##class ReaderPage4(tk.Frame):
-##    def __init__(self, parent, controller):
-##        tk.Frame.__init__(self, parent, bg='#BFCACA')
-##        top_frame = tk.Frame(self, bg='#CCCCCC')
-##        reader_frame = tk.Frame(self, bg='#CCCCCC')
-##        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
-##        header_label.config(font=("Sans", 20, 'bold'))
-##
-##        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
-##        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
-##        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
-##        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
-##
-##        main_btn.grid(row=0, column=0, padx=10, pady=5)
-##        library_btn.grid(row=0, column=1, padx=10, pady=5)
-##        profile_btn.grid(row=0, column=2, padx=10, pady=5)
-##        logout_btn.grid(row=0, column=3, padx=10, pady=5)
-##
-##        top_frame.place(x=426, y=15)
-##        reader_frame.place(x=10, y=65)
-##        header_label.place(x=40, y=20)
-##
-##        # PDF is converted to a list of images
-##        pages = convert_from_path(pathList[3], size=(800, 900), poppler_path = pop_path)
-##
-##        # Empty list for storing images
-##        photos = []
-##
-##        tab_control = ttk.Notebook(reader_frame)
-##        tab_control.place(x=10, y=10, height=600, width=800)
-##        scroll_y = tk.Scrollbar(reader_frame, orient=tk.VERTICAL)
-##        scroll_y.grid(row=0, column=1, sticky='ns')
-##        pdf = tk.Text(reader_frame, height=43, width=108, yscrollcommand=scroll_y.set, bg="grey")
-##        pdf.grid(row=0, column=0)
-##        scroll_y.config(command=pdf.yview)
-##
-##        # Storing the converted images into list
-##        for i in range(len(pages)):
-##            photos.append(ImageTk.PhotoImage(pages[i]))
-##
-##        # Clear the text box
-##        pdf.delete('1.0', tk.END)
-##
-##        # Adding all the images to the text widget
-##        for photo in photos:
-##            pdf.image_create(tk.END, image=photo)
-##
-##            # For Separating the pages
-##            pdf.insert(tk.END, '\n\n')
-##
-##            pdf.photos = photos  # used an attribute of "pdf" to store the references
-##
-##
-##class ReaderPage5(tk.Frame):
-##    def __init__(self, parent, controller):
-##        tk.Frame.__init__(self, parent, bg='#BFCACA')
-##        top_frame = tk.Frame(self, bg='#CCCCCC')
-##        reader_frame = tk.Frame(self, bg='#CCCCCC')
-##        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
-##        header_label.config(font=("Sans", 20, 'bold'))
-##
-##        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
-##        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
-##        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
-##        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
-##
-##        main_btn.grid(row=0, column=0, padx=10, pady=5)
-##        library_btn.grid(row=0, column=1, padx=10, pady=5)
-##        profile_btn.grid(row=0, column=2, padx=10, pady=5)
-##        logout_btn.grid(row=0, column=3, padx=10, pady=5)
-##
-##        top_frame.place(x=426, y=15)
-##        reader_frame.place(x=10, y=65)
-##        header_label.place(x=40, y=20)
-##
-##        # PDF is converted to a list of images
-##        pages = convert_from_path(pathList[4], size=(800, 900), poppler_path = pop_path)
-##
-##        # Empty list for storing images
-##        photos = []
-##
-##        tab_control = ttk.Notebook(reader_frame)
-##        tab_control.place(x=10, y=10, height=600, width=800)
-##        scroll_y = tk.Scrollbar(reader_frame, orient=tk.VERTICAL)
-##        scroll_y.grid(row=0, column=1, sticky='ns')
-##        pdf = tk.Text(reader_frame, height=43, width=108, yscrollcommand=scroll_y.set, bg="grey")
-##        pdf.grid(row=0, column=0)
-##        scroll_y.config(command=pdf.yview)
-##
-##        # Storing the converted images into list
-##        for i in range(len(pages)):
-##            photos.append(ImageTk.PhotoImage(pages[i]))
-##
-##        # Clear the text box
-##        pdf.delete('1.0', tk.END)
-##
-##        # Adding all the images to the text widget
-##        for photo in photos:
-##            pdf.image_create(tk.END, image=photo)
-##
-##            # For Separating the pages
-##            pdf.insert(tk.END, '\n\n')
-##
-##            pdf.photos = photos  # used an attribute of "pdf" to store the references
-##
-##
-##class ReaderPage6(tk.Frame):
-##    def __init__(self, parent, controller):
-##        tk.Frame.__init__(self, parent, bg='#BFCACA')
-##        top_frame = tk.Frame(self, bg='#CCCCCC')
-##        reader_frame = tk.Frame(self, bg='#CCCCCC')
-##        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
-##        header_label.config(font=("Sans", 20, 'bold'))
-##
-##        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
-##        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
-##        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
-##        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
-##
-##        main_btn.grid(row=0, column=0, padx=10, pady=5)
-##        library_btn.grid(row=0, column=1, padx=10, pady=5)
-##        profile_btn.grid(row=0, column=2, padx=10, pady=5)
-##        logout_btn.grid(row=0, column=3, padx=10, pady=5)
-##
-##        top_frame.place(x=426, y=15)
-##        reader_frame.place(x=10, y=65)
-##        header_label.place(x=40, y=20)
-##
-##        # PDF is converted to a list of images
-##        pages = convert_from_path(pathList[5], size=(800, 900), poppler_path = pop_path)
-##
-##        # Empty list for storing images
-##        photos = []
-##
-##        tab_control = ttk.Notebook(reader_frame)
-##        tab_control.place(x=10, y=10, height=600, width=800)
-##        scroll_y = tk.Scrollbar(reader_frame, orient=tk.VERTICAL)
-##        scroll_y.grid(row=0, column=1, sticky='ns')
-##        pdf = tk.Text(reader_frame, height=43, width=108, yscrollcommand=scroll_y.set, bg="grey")
-##        pdf.grid(row=0, column=0)
-##        scroll_y.config(command=pdf.yview)
-##
-##        # Storing the converted images into list
-##        for i in range(len(pages)):
-##            photos.append(ImageTk.PhotoImage(pages[i]))
-##
-##        # Clear the text box
-##        pdf.delete('1.0', tk.END)
-##
-##        # Adding all the images to the text widget
-##        for photo in photos:
-##            pdf.image_create(tk.END, image=photo)
-##
-##            # For Separating the pages
-##            pdf.insert(tk.END, '\n\n')
-##
-##            pdf.photos = photos  # used an attribute of "pdf" to store the references
-
-
-class MyLibrary(tk.Frame):
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent, bg='#BFCACA')
-        top_frame = tk.Frame(self, bg='#CCCCCC')
-        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
-        header_label.config(font=("Sans", 20, 'bold'))
-
-        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: refreshMain(MainPage))
-        library_btn = tk.Button(top_frame, text='My Library', state='disabled')
-        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
-        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
-
-        main_btn.grid(row=0, column=0, padx=10, pady=5)
-        library_btn.grid(row=0, column=1, padx=10, pady=5)
-        profile_btn.grid(row=0, column=2, padx=10, pady=5)
-        logout_btn.grid(row=0, column=3, padx=10, pady=5)
-
-        top_frame.place(x=426, y=20)
-        header_label.place(x=40, y=20)
-
-        book1 = Image.open(coverList[0])
-        book1 = book1.resize((131, 170), Image.ANTIALIAS)
-        book1 = ImageTk.PhotoImage(book1)
         book1_label = tk.Label(self, image=book1)
         book1_label.image = book1
         book1_label.place(x=225, y=160)
@@ -982,6 +376,70 @@ class MyLibrary(tk.Frame):
         book6_btn = tk.Button(self, width=15, text='View Book')
         book6_btn.place(x=575, y=575)
 
+        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
+        header_label.config(font=("sans", 20, 'bold'))
+
+        featured_lbl = tk.Label(self, text="Featured Reads", bg='#BFCACA')
+        featured_lbl.config(font=("sans", 18, 'italic'))
+
+        main_btn = tk.Button(top_frame, text='Main Page', state='disabled')
+        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
+        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+
+        search_entry = tk.Entry(mainFrame, width=67, font=f)
+        search_entry.pack(side=LEFT, fill=BOTH, expand=1)
+        search_entry.insert(0, "Search eBooks by title, author, or ISBN")
+
+        category_filter = tk.OptionMenu(mainFrame, variable, *categories)
+        category_filter.pack(side=LEFT)
+
+        search_button = tk.Button(mainFrame, text='Search')
+        search_button.pack(side=RIGHT)
+        mainFrame.pack(side=TOP)
+
+        recommendations_btn = tk.Button(sidebar_frame, text='Recommendations')
+        categories_btn = tk.Button(sidebar_frame, text='Categories')
+        chat_btn = tk.Button(sidebar_frame, text='World Chat', command=lambda: Client(HOST, PORT))
+        upload_btn = tk.Button(sidebar_frame, text='Upload an eBook', command=lambda: controller.show_frame(UploadPage))
+
+        main_btn.grid(row=0, column=0, padx=10, pady=5)
+        library_btn.grid(row=0, column=1, padx=10, pady=5)
+        profile_btn.grid(row=0, column=2, padx=10, pady=5)
+        logout_btn.grid(row=0, column=3, padx=10, pady=5)
+
+        recommendations_btn.grid(row=0, column=0, padx=10, pady=5)
+        categories_btn.grid(row=1, column=0, padx=10, pady=5)
+        chat_btn.grid(row=3, column=0, padx=10, pady=5)
+        upload_btn.grid(row=2, column=0, padx=10, pady=5)
+
+        mainFrame.place(x=41, y=70)
+        top_frame.place(x=426, y=20)
+        sidebar_frame.place(x=40, y=120)
+        header_label.place(x=40, y=20)
+        featured_lbl.place(x=225, y=120)
+
+
+class MyLibrary(tk.Frame):
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent, bg='#BFCACA')
+        top_frame = tk.Frame(self, bg='#CCCCCC')
+        header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
+        header_label.config(font=("Sans", 20, 'bold'))
+
+        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
+        library_btn = tk.Button(top_frame, text='My Library', state='disabled')
+        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+
+        main_btn.grid(row=0, column=0, padx=10, pady=5)
+        library_btn.grid(row=0, column=1, padx=10, pady=5)
+        profile_btn.grid(row=0, column=2, padx=10, pady=5)
+        logout_btn.grid(row=0, column=3, padx=10, pady=5)
+
+        top_frame.place(x=426, y=20)
+        header_label.place(x=40, y=20)
+
 
 class ProfilePage(tk.Frame):
     def __init__(self, parent, controller):
@@ -991,7 +449,7 @@ class ProfilePage(tk.Frame):
         header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
         header_label.config(font=("Sans", 20, 'bold'))
 
-        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: refreshMain(MainPage))
+        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.show_frame(MainPage))
         library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
         profile_btn = tk.Button(top_frame, text='Profile', state='disabled')
         logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
