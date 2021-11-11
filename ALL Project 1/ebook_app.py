@@ -11,7 +11,7 @@ from db_handle import *
 f = ('Arial', 14)
 HOST = '127.0.0.1'
 PORT = 8080
-pop_path = "/usr/local/Cellar/poppler/21.11.0/bin"  #need this to work on mac for some reason
+pop_path = "/usr/local/Cellar/poppler/21.11.0/bin"  # need this to work on mac for some reason
 
 
 def resetMainPage():
@@ -52,18 +52,20 @@ def resetMainPage():
     book6_label.configure(image = Book6)
     book6_label.image = Book6
 
+
 def resetDetailsPage(x):
     newBookD = Image.open(coverList[x])
     newBookD = newBookD.resize((131, 170), Image.ANTIALIAS)
     BookD = ImageTk.PhotoImage(newBookD)
-    bookD_label.configure(image = BookD)
+    bookD_label.configure(image=BookD)
     bookD_label.image = BookD
-    author_label.configure(text = authorList[x])
-    title_label.configure(text = titleList[x])
-    synopsis_label.configure(text = synopsisList[x])
+    author_label.configure(text=authorList[x])
+    title_label.configure(text=titleList[x])
+    synopsis_label.configure(text=synopsisList[x])
+
 
 def resetReader(x):
-    pages = convert_from_path(pathList[x], size=(800, 900), poppler_path = pop_path)
+    pages = convert_from_path(pathList[x], size=(800, 900), poppler_path=pop_path)
 
     newPhotos = []
 
@@ -105,7 +107,8 @@ class App(tk.Tk):
 
         self.frames = {}
 
-        for F in (StartPage, LoginPage, RegistrationPage, MainPage, ProfilePage, UploadPage, DetailPage, MyLibrary, ReaderPage):
+        for F in (StartPage, LoginPage, RegistrationPage, MainPage, ProfilePage, UploadPage, DetailPage, MyLibrary,
+                  ReaderPage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
@@ -915,7 +918,7 @@ class MyLibrary(tk.Frame):
         header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
         header_label.config(font=("Sans", 20, 'bold'))
 
-        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: refreshMain(MainPage))
+        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.refreshMain(MainPage))
         library_btn = tk.Button(top_frame, text='My Library', state='disabled')
         profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
         logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
@@ -991,7 +994,7 @@ class ProfilePage(tk.Frame):
         header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
         header_label.config(font=("Sans", 20, 'bold'))
 
-        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: refreshMain(MainPage))
+        main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.refreshMain(MainPage))
         library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
         profile_btn = tk.Button(top_frame, text='Profile', state='disabled')
         logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))

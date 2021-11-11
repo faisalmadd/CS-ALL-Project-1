@@ -79,9 +79,11 @@ currentBook = []
 
 ran6 = random.sample(range(1, 21), 6)
 
+
 def setCurrentBook(x):
     currentBook.clear()
     currentBook.append(x)
+
 
 def download_book(idx):
     book_path = pathList[idx]
