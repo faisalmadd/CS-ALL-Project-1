@@ -77,7 +77,7 @@ pathList = []
 currentBook = []
 
 
-ran6 = random.sample(range(1, 21), 6)
+ran6 = random.sample(range(1, 22), 6)
 
 
 def setCurrentBook(x):
@@ -93,7 +93,7 @@ def download_book(idx):
 
 
 def randomLists():
-    ran6 = random.sample(range(1, 21), 6)
+    ran6 = random.sample(range(1, 22), 6)
     idList.clear()
     coverList.clear()
     titleList.clear()

@@ -1240,7 +1240,7 @@ class UploadPage(tk.Frame):
                             'synopsis': book_synopsis.get(),
                             'category': variable.get(),
                             'path': ('../ALL Project 1/Library/' + os.path.basename(self.filename)),
-                            'cover': ('../ALL Project 1/Library/BookCover/' + os.path.basename(self.covername))
+                            'cover': ('../ALL Project 1/Library/BookCover/' + os.path.basename(self.cover_name))
 
                         })
                     con.commit()
