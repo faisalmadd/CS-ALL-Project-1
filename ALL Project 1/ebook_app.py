@@ -19,37 +19,37 @@ def resetMainPage():
     newBook1 = Image.open(coverList[0])
     newBook1 = newBook1.resize((131, 170), Image.ANTIALIAS)
     Book1 = ImageTk.PhotoImage(newBook1)
-    book1_label.configure(image = Book1)
+    book1_label.configure(image=Book1)
     book1_label.image = Book1
 
     newBook2 = Image.open(coverList[1])
     newBook2 = newBook2.resize((131, 170), Image.ANTIALIAS)
     Book2 = ImageTk.PhotoImage(newBook2)
-    book2_label.configure(image = Book2)
+    book2_label.configure(image=Book2)
     book2_label.image = Book2
 
     newBook3 = Image.open(coverList[2])
     newBook3 = newBook3.resize((131, 170), Image.ANTIALIAS)
     Book3 = ImageTk.PhotoImage(newBook3)
-    book3_label.configure(image = Book3)
+    book3_label.configure(image=Book3)
     book3_label.image = Book3
 
     newBook4 = Image.open(coverList[3])
     newBook4 = newBook4.resize((131, 170), Image.ANTIALIAS)
     Book4 = ImageTk.PhotoImage(newBook4)
-    book4_label.configure(image = Book4)
+    book4_label.configure(image=Book4)
     book4_label.image = Book4
 
     newBook5 = Image.open(coverList[4])
     newBook5 = newBook5.resize((131, 170), Image.ANTIALIAS)
     Book5 = ImageTk.PhotoImage(newBook5)
-    book5_label.configure(image = Book5)
+    book5_label.configure(image=Book5)
     book5_label.image = Book5
 
     newBook6 = Image.open(coverList[5])
     newBook6 = newBook6.resize((131, 170), Image.ANTIALIAS)
     Book6 = ImageTk.PhotoImage(newBook6)
-    book6_label.configure(image = Book6)
+    book6_label.configure(image=Book6)
     book6_label.image = Book6
 
 
@@ -82,6 +82,12 @@ def resetReader(x):
         pdf.newPhotos = newPhotos
         
 
+def resetProfile():
+    global login_details
+    login_details.clear()
+    login_details = list(logged_in_user(user[0]))
+
+
 def logged_in_user(username):
     con = sqlite3.connect('userdata.db')
     cursor = con.cursor()
@@ -92,7 +98,7 @@ def logged_in_user(username):
 
 
 user = ['user']
-login_details = logged_in_user(user[0])
+login_details = list(logged_in_user(user[0]))
 
 
 class App(tk.Tk):
@@ -132,6 +138,11 @@ class App(tk.Tk):
 
     def refreshReader(self, cont, x):
         resetReader(x)
+        frame = self.frames[cont]
+        frame.tkraise()
+
+    def refreshProfile(self, cont):
+        resetProfile()
         frame = self.frames[cont]
         frame.tkraise()
 
@@ -476,7 +487,7 @@ class MainPage(tk.Frame):
 
         main_btn = tk.Button(top_frame, text='Main Page', state='disabled')
         library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
-        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
+        profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.refreshProfile(ProfilePage))
         logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
 
         search_entry = tk.Entry(mainFrame, width=67, font=f)
