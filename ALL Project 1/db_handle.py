@@ -5,6 +5,18 @@ from PIL import Image, ImageTk
 from tkinter import filedialog, messagebox
 
 
+idList = []
+coverList = []
+titleList = []
+authorList = []
+synopsisList = []
+pathList = []
+currentBook = []
+ran6 = random.sample(range(1, 21), 6)
+searchTitle = []
+searchAuthor = []
+searchISBN = []
+
 def readBookID(bookID):
     con = sqlite3.connect('userdata.db')
     cursor = con.cursor()
@@ -65,25 +77,9 @@ def readBookPath(bookID):
     return bookPath
 
 
-idList = []
-
-
-coverList = []
-titleList = []
-authorList = []
-synopsisList = []
-pathList = []
-
-currentBook = []
-
-
-ran6 = random.sample(range(1, 22), 6)
-
-
 def setCurrentBook(x):
     currentBook.clear()
     currentBook.append(x)
-
 
 def download_book(idx):
     book_path = pathList[idx]
@@ -91,9 +87,8 @@ def download_book(idx):
     shutil.copy(book_path, folder)
     messagebox.showinfo('Download Status', 'Book downloaded successfully!')
 
-
 def randomLists():
-    ran6 = random.sample(range(1, 22), 6)
+    ran6 = random.sample(range(1, 21), 6)
     idList.clear()
     coverList.clear()
     titleList.clear()
@@ -109,11 +104,53 @@ def randomLists():
         pathList.append(readBookPath(x))
 
 
-randomLists()
+def search(q):
+    searchTitle.clear()
+    searchAuthor.clear()
+    searchISBN.clear()
+    idList.clear()
+    coverList.clear()
+    titleList.clear()
+    authorList.clear()
+    synopsisList.clear()
+    pathList.clear()
 
-for x in ran6:
-    coverList.append(readCoverFile(x))
-    titleList.append(readBookTitle(x))
-    authorList.append(readBookAuthor(x))
-    synopsisList.append(readBookSynopsis(x))
-    pathList.append(readBookPath(x))
+    qNew = "%" + q + "%"
+
+    con = sqlite3.connect('userdata.db')
+    cursor = con.cursor()
+
+    queryID = "SELECT * from books where title LIKE ?"
+    cursor.execute(queryID, (qNew,))
+    bookRecord = cursor.fetchall()
+    for row in bookRecord:
+        searchTitle.append(row[0])
+
+    queryID = "SELECT * from books where author LIKE ?"
+    cursor.execute(queryID, (qNew,))
+    bookRecord = cursor.fetchall()
+    for row in bookRecord:
+        searchAuthor.append(row[0])
+
+    queryID = "SELECT * from books where ISBN LIKE ?"
+    cursor.execute(queryID, (q,))
+    bookRecord = cursor.fetchall()
+    for row in bookRecord:
+        searchAuthor.append(row[0])
+
+    a = set(searchTitle)
+    b = set(searchAuthor)
+    c = set(searchISBN)
+
+    searchResultList = list(a.union(b, c))
+    for x in searchResultList:
+        idList.append(readBookID(x))
+        coverList.append(readCoverFile(x))
+        titleList.append(readBookTitle(x))
+        authorList.append(readBookAuthor(x))
+        synopsisList.append(readBookSynopsis(x))
+        pathList.append(readBookPath(x))
+
+    print(titleList)
+    
+randomLists()
