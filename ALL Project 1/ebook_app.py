@@ -54,11 +54,12 @@ def resetMainPage():
 
 
 def resetSearchPage():
+
     if len(idList) > 0:
         newBook1S = Image.open(coverList[0])
         newBook1S = newBook1S.resize((131, 170), Image.ANTIALIAS)
         newBook1S = ImageTk.PhotoImage(newBook1S)
-        book1S_label.configure(image=newBook1S)
+        book1S_label.configure(image = newBook1S)
         book1S_label.image = newBook1S
         book1S_label.place(x=225, y=160)
         book1S_btn.place(x=225, y=345)
@@ -70,18 +71,18 @@ def resetSearchPage():
         newBook2S = Image.open(coverList[1])
         newBook2S = newBook2S.resize((131, 170), Image.ANTIALIAS)
         newBook2S = ImageTk.PhotoImage(newBook2S)
-        book2S_label.configure(image=newBook2S)
+        book2S_label.configure(image = newBook2S)
         book2S_label.image = newBook2S
         book2S_label.place(x=400, y=160)
         book2S_btn.place(x=400, y=345)
     else:
         book2S_label.pack_forget()
-
+        
     if len(idList) > 2:
-        newBook3S = Image.open(coverList[0])
+        newBook3S = Image.open(coverList[2])
         newBook3S = newBook3S.resize((131, 170), Image.ANTIALIAS)
         newBook3S = ImageTk.PhotoImage(newBook3S)
-        book3S_label.configure(image=newBook3S)
+        book3S_label.configure(image = newBook3S)
         book3S_label.image = newBook3S
         book3S_label.place(x=575, y=160)
         book3S_btn.place(x=575, y=345)
@@ -90,27 +91,28 @@ def resetSearchPage():
         newBook4S = Image.open(coverList[3])
         newBook4S = newBook4S.resize((131, 170), Image.ANTIALIAS)
         newBook4S = ImageTk.PhotoImage(newBook4S)
-        newBook4S_label.image = newBook4S
-        newBook4S_label.place(x=225, y=390)
-        newBook4S_btn.place(x=225, y=575)
+        book4S_label.configure(image = newBook4S)
+        book4S_label.image = newBook4S
+        book4S_label.place(x=225, y=390)
+        book4S_btn.place(x=225, y=575)
 
     if len(idList) > 4:
         newBook5S = Image.open(coverList[4])
         newBook5S = newBook5S.resize((131, 170), Image.ANTIALIAS)
         newBook5S = ImageTk.PhotoImage(newBook5S)
-        newBook5S_label = tk.Label(self, image=newBook5S)
-        newBook5S_label.image = newBook5S
-        newBook5S_label.place(x=400, y=390)
-        newBook5S_btn.place(x=400, y=575)
+        book5S_label.configure(image = newBook5S)
+        book5S_label.image = newBook5S
+        book5S_label.place(x=400, y=390)
+        book5S_btn.place(x=400, y=575)
 
     if len(idList) > 5:
         newBook6S = Image.open(coverList[5])
         newBook6S = newBook6S.resize((131, 170), Image.ANTIALIAS)
         newBook6S = ImageTk.PhotoImage(newBook6S)
-        newBook6S_label = tk.Label(self, image=newBook6S)
-        newBook6S_label.image = newBook6S
-        newBook6S_label.place(x=575, y=390)
-        newBook6S_btn.place(x=575, y=575)
+        book6S_label.configure(image = newBook6S)
+        book6S_label.image = newBook6S
+        book6S_label.place(x=575, y=390)
+        book6S_btn.place(x=575, y=575)
 
 
 def resetDetailsPage(x):
@@ -674,7 +676,7 @@ class DetailPage(tk.Frame):
         read_btn = tk.Button(self, width=15, text='Begin Reading',
                              command=lambda: controller.refreshReader(ReaderPage, currentBook[0]))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
-        download_btn = tk.Button(self, width=15, text='Download', command=lambda: download_book(0))
+        download_btn = tk.Button(self, width=15, text='Download', command=lambda: download_book(currentBook[0]))
 
         reviewFrame = tk.Frame(self, bg='#BFCACA')
         ratingFrame = tk.Frame(reviewFrame)
