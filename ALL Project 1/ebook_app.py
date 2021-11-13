@@ -11,7 +11,7 @@ from db_handle import *
 f = ('Arial', 14)
 HOST = '127.0.0.1'
 PORT = 8080
-pop_path = "/usr/local/Cellar/poppler/21.11.0/bin"  #need this to work on mac for some reason
+pop_path = "/usr/local/Cellar/poppler/21.11.0/bin"  # need this to work on mac for some reason
 
 
 def resetMainPage():
@@ -51,15 +51,14 @@ def resetMainPage():
     Book6 = ImageTk.PhotoImage(newBook6)
     book6_label.configure(image=Book6)
     book6_label.image = Book6
-    
+
 
 def resetSearchPage():
-
     if len(idList) > 0:
         newBook1S = Image.open(coverList[0])
         newBook1S = newBook1S.resize((131, 170), Image.ANTIALIAS)
         newBook1S = ImageTk.PhotoImage(newBook1S)
-        book1S_label.configure(image = newBook1S)
+        book1S_label.configure(image=newBook1S)
         book1S_label.image = newBook1S
         book1S_label.place(x=225, y=160)
         book1S_btn.place(x=225, y=345)
@@ -71,18 +70,18 @@ def resetSearchPage():
         newBook2S = Image.open(coverList[1])
         newBook2S = newBook2S.resize((131, 170), Image.ANTIALIAS)
         newBook2S = ImageTk.PhotoImage(newBook2S)
-        book2S_label.configure(image = newBook2S)
+        book2S_label.configure(image=newBook2S)
         book2S_label.image = newBook2S
         book2S_label.place(x=400, y=160)
         book2S_btn.place(x=400, y=345)
     else:
         book2S_label.pack_forget()
-        
+
     if len(idList) > 2:
         newBook3S = Image.open(coverList[0])
         newBook3S = newBook3S.resize((131, 170), Image.ANTIALIAS)
         newBook3S = ImageTk.PhotoImage(newBook3S)
-        book3S_label.configure(image = newBook3S)
+        book3S_label.configure(image=newBook3S)
         book3S_label.image = newBook3S
         book3S_label.place(x=575, y=160)
         book3S_btn.place(x=575, y=345)
@@ -113,18 +112,20 @@ def resetSearchPage():
         newBook6S_label.place(x=575, y=390)
         newBook6S_btn.place(x=575, y=575)
 
+
 def resetDetailsPage(x):
     newBookD = Image.open(coverList[x])
     newBookD = newBookD.resize((131, 170), Image.ANTIALIAS)
     BookD = ImageTk.PhotoImage(newBookD)
-    bookD_label.configure(image = BookD)
+    bookD_label.configure(image=BookD)
     bookD_label.image = BookD
-    author_label.configure(text = authorList[x])
-    title_label.configure(text = titleList[x])
-    synopsis_label.configure(text = synopsisList[x])
+    author_label.configure(text=authorList[x])
+    title_label.configure(text=titleList[x])
+    synopsis_label.configure(text=synopsisList[x])
+
 
 def resetReader(x):
-    pages = convert_from_path(pathList[x], size=(800, 900), poppler_path = pop_path)
+    pages = convert_from_path(pathList[x], size=(800, 900), poppler_path=pop_path)
 
     newPhotos = []
 
@@ -139,6 +140,7 @@ def resetReader(x):
         pdf.insert(tk.END, '\n\n')
 
         pdf.newPhotos = newPhotos
+
 
 def resetProfile():
     global login_details
@@ -157,18 +159,22 @@ def logged_in_user(username):
 
 user = ['user']
 
-login_details = logged_in_user(user[0])
-        
+login_details = list(logged_in_user(user[0]))
+
+
 def searchMain():
     searchQuery = search_entry.get()
     search(searchQuery)
+
 
 def searchSide():
     searchQuery = search_entry_side.get()
     search(searchQuery)
 
+
 def hideWidget(event):
     event.pack_forget()
+
 
 def clearSearchWidget():
     hideWidget(book1S_label)
@@ -184,8 +190,8 @@ def clearSearchWidget():
     hideWidget(book5S_btn)
     hideWidget(book6S_btn)
 
-login_details = list(logged_in_user(user[0]))
 
+login_details = list(logged_in_user(user[0]))
 
 
 class App(tk.Tk):
@@ -200,7 +206,9 @@ class App(tk.Tk):
 
         self.frames = {}
 
-        for F in (StartPage, LoginPage, RegistrationPage, MainPage, ProfilePage, UploadPage, DetailPage, MyLibrary, ReaderPage, SearchPage):
+        for F in (
+        StartPage, LoginPage, RegistrationPage, MainPage, ProfilePage, UploadPage, DetailPage, MyLibrary, ReaderPage,
+        SearchPage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')
@@ -226,7 +234,6 @@ class App(tk.Tk):
         resetReader(x)
         frame = self.frames[cont]
         frame.tkraise()
-
 
     def refreshMainSearch(self, cont):
         searchMain()
@@ -587,7 +594,7 @@ class MainPage(tk.Frame):
         main_btn = tk.Button(top_frame, text='Main Page', state='disabled')
         library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
         profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.refreshProfile(ProfilePage))
-        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: log_out())
 
         global search_entry
         search_entry = tk.Entry(mainFrame, width=67, font=f)
@@ -622,6 +629,10 @@ class MainPage(tk.Frame):
         header_label.place(x=40, y=20)
         featured_lbl.place(x=225, y=120)
 
+        def log_out():
+            controller.show_frame(LoginPage)
+            messagebox.showinfo('Logout Status', 'Logged out successfully!')
+
 
 class DetailPage(tk.Frame):
     def __init__(self, parent, controller):
@@ -633,7 +644,7 @@ class DetailPage(tk.Frame):
         main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.refreshMain(MainPage))
         library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
         profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
-        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: log_out())
 
         bookD = Image.open(coverList[0])
         bookD = bookD.resize((131, 170), Image.ANTIALIAS)
@@ -660,7 +671,8 @@ class DetailPage(tk.Frame):
         review_label.config(font=("Sans", 20, 'bold'))
         review_label.place(x=40, y=375)
 
-        read_btn = tk.Button(self, width=15, text='Begin Reading', command=lambda: controller.refreshReader(ReaderPage, currentBook[0]))
+        read_btn = tk.Button(self, width=15, text='Begin Reading',
+                             command=lambda: controller.refreshReader(ReaderPage, currentBook[0]))
         add_fav = tk.Button(self, width=15, text='Add to My Library')
         download_btn = tk.Button(self, width=15, text='Download', command=lambda: download_book(0))
 
@@ -689,7 +701,7 @@ class DetailPage(tk.Frame):
         enter_button.grid(row=0, column=2, padx=10, pady=5)
 
         reviewFrame.place(x=32, y=410)
-        
+
         read_btn.place(x=625, y=120)
         add_fav.place(x=625, y=160)
         download_btn.place(x=625, y=200)
@@ -701,6 +713,10 @@ class DetailPage(tk.Frame):
 
         top_frame.place(x=426, y=20)
         header_label.place(x=40, y=20)
+
+        def log_out():
+            controller.show_frame(LoginPage)
+            messagebox.showinfo('Logout Status', 'Logged out successfully!')
 
 
 class ReaderPage(tk.Frame):
@@ -714,7 +730,7 @@ class ReaderPage(tk.Frame):
         main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.refreshMain(MainPage))
         library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
         profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
-        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: log_out())
 
         main_btn.grid(row=0, column=0, padx=10, pady=5)
         library_btn.grid(row=0, column=1, padx=10, pady=5)
@@ -726,7 +742,7 @@ class ReaderPage(tk.Frame):
         header_label.place(x=40, y=20)
 
         # PDF is converted to a list of images
-        pages = convert_from_path(pathList[0], size=(800, 900), poppler_path = pop_path) #needed pop_path to run
+        pages = convert_from_path(pathList[0], size=(800, 900), poppler_path=pop_path)  # needed pop_path to run
 
         # Empty list for storing images
         photos = []
@@ -756,6 +772,9 @@ class ReaderPage(tk.Frame):
 
             pdf.photos = photos  # used an attribute of "pdf" to store the references
 
+        def log_out():
+            controller.show_frame(LoginPage)
+            messagebox.showinfo('Logout Status', 'Logged out successfully!')
 
 
 class MyLibrary(tk.Frame):
@@ -768,7 +787,7 @@ class MyLibrary(tk.Frame):
         main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.refreshMain(MainPage))
         library_btn = tk.Button(top_frame, text='My Library', state='disabled')
         profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
-        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: log_out())
 
         main_btn.grid(row=0, column=0, padx=10, pady=5)
         library_btn.grid(row=0, column=1, padx=10, pady=5)
@@ -832,6 +851,10 @@ class MyLibrary(tk.Frame):
         book6_btn = tk.Button(self, width=15, text='View Book')
         book6_btn.place(x=575, y=575)
 
+        def log_out():
+            controller.show_frame(LoginPage)
+            messagebox.showinfo('Logout Status', 'Logged out successfully!')
+
 
 class ProfilePage(tk.Frame):
     def __init__(self, parent, controller):
@@ -844,7 +867,7 @@ class ProfilePage(tk.Frame):
         main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.refreshMain(MainPage))
         library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
         profile_btn = tk.Button(top_frame, text='Profile', state='disabled')
-        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: log_out())
 
         # profile pic
         pic = Image.open('profilepic.jpeg')
@@ -923,6 +946,10 @@ class ProfilePage(tk.Frame):
         female_rb.pack(expand=True, side=LEFT)
 
         save_btn = tk.Button(self, text='Save Changes', command=lambda: edit_record())
+
+        def log_out():
+            controller.show_frame(LoginPage)
+            messagebox.showinfo('Logout Status', 'Logged out successfully!')
 
         def edit_profile():
             usr_name.config(state='normal')
@@ -1133,7 +1160,8 @@ class SearchPage(tk.Frame):
         book1S_label.image = book1S
         book1S_label.place(x=225, y=160)
         global book1S_btn
-        book1S_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 0))
+        book1S_btn = tk.Button(self, width=15, text='View Book',
+                               command=lambda: controller.refreshDetail(DetailPage, 0))
         book1S_btn.place(x=225, y=345)
         book1S_label.pack()
         book1S_btn.pack()
@@ -1146,7 +1174,8 @@ class SearchPage(tk.Frame):
         book2S_label.image = book2S
         book2S_label.place(x=400, y=160)
         global book2S_btn
-        book2S_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 1))
+        book2S_btn = tk.Button(self, width=15, text='View Book',
+                               command=lambda: controller.refreshDetail(DetailPage, 1))
         book2S_btn.place(x=400, y=345)
         book2S_label.pack()
         book2S_btn.pack()
@@ -1159,7 +1188,8 @@ class SearchPage(tk.Frame):
         book3S_label.image = book3S
         book3S_label.place(x=575, y=160)
         global book3S_btn
-        book3S_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 2))
+        book3S_btn = tk.Button(self, width=15, text='View Book',
+                               command=lambda: controller.refreshDetail(DetailPage, 2))
         book3S_btn.place(x=575, y=345)
         book3S_label.pack()
         book3S_btn.pack()
@@ -1172,7 +1202,8 @@ class SearchPage(tk.Frame):
         book4S_label.image = book4S
         book4S_label.place(x=225, y=390)
         global book4S_btn
-        book4S_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 3))
+        book4S_btn = tk.Button(self, width=15, text='View Book',
+                               command=lambda: controller.refreshDetail(DetailPage, 3))
         book4S_btn.place(x=225, y=575)
         book4S_label.pack()
         book4S_btn.pack()
@@ -1185,7 +1216,8 @@ class SearchPage(tk.Frame):
         book5S_label.image = book5S
         book5S_label.place(x=400, y=390)
         global book5S_btn
-        book5S_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 4))
+        book5S_btn = tk.Button(self, width=15, text='View Book',
+                               command=lambda: controller.refreshDetail(DetailPage, 4))
         book5S_btn.place(x=400, y=575)
         book5S_label.pack()
         book5S_btn.pack()
@@ -1198,7 +1230,8 @@ class SearchPage(tk.Frame):
         book6S_label.image = book6S
         book6S_label.place(x=575, y=390)
         global book6S_btn
-        book6S_btn = tk.Button(self, width=15, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 5))
+        book6S_btn = tk.Button(self, width=15, text='View Book',
+                               command=lambda: controller.refreshDetail(DetailPage, 5))
         book6S_btn.place(x=575, y=575)
         book6S_label.pack()
         book6S_btn.pack()
@@ -1215,7 +1248,11 @@ class SearchPage(tk.Frame):
         main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.refreshMain(MainPage))
         library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
         profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
-        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: controller.show_frame(LoginPage))
+        logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: log_out())
+
+        def log_out():
+            controller.show_frame(LoginPage)
+            messagebox.showinfo('Logout Status', 'Logged out successfully!')
 
         global search_entry_side
         search_entry_side = tk.Entry(mainFrame, width=67, font=f)

@@ -4,7 +4,6 @@ import sqlite3
 from PIL import Image, ImageTk
 from tkinter import filedialog, messagebox
 
-
 idList = []
 coverList = []
 titleList = []
@@ -16,6 +15,7 @@ ran6 = random.sample(range(1, 21), 6)
 searchTitle = []
 searchAuthor = []
 searchISBN = []
+
 
 def readBookID(bookID):
     con = sqlite3.connect('userdata.db')
@@ -81,11 +81,13 @@ def setCurrentBook(x):
     currentBook.clear()
     currentBook.append(x)
 
+
 def download_book(idx):
     book_path = pathList[idx]
     folder = filedialog.askdirectory()
     shutil.copy(book_path, folder)
     messagebox.showinfo('Download Status', 'Book downloaded successfully!')
+
 
 def randomLists():
     ran6 = random.sample(range(1, 21), 6)
@@ -152,5 +154,6 @@ def search(q):
         pathList.append(readBookPath(x))
 
     print(titleList)
-    
+
+
 randomLists()
