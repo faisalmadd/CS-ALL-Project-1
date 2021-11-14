@@ -157,7 +157,7 @@ def logged_in_user(username):
     return userRecord
 
 
-user = ['user']
+user = ['test@test.com']
 
 login_details = list(logged_in_user(user[0]))
 
@@ -207,8 +207,8 @@ class App(tk.Tk):
         self.frames = {}
 
         for F in (
-        StartPage, LoginPage, RegistrationPage, MainPage, ProfilePage, UploadPage, DetailPage, MyLibrary, ReaderPage,
-        SearchPage):
+                StartPage, LoginPage, RegistrationPage, MainPage, ProfilePage, UploadPage, DetailPage, MyLibrary,
+                ReaderPage, SearchPage):
             frame = F(container, self)
             self.frames[F] = frame
             frame.grid(row=0, column=0, sticky='nsew')

@@ -4,9 +4,6 @@ import threading
 from tkinter import simpledialog
 from tkinter import scrolledtext
 
-HOST = '127.0.0.1'
-PORT = 8080
-
 
 class Client:
 
