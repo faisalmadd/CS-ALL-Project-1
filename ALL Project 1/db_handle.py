@@ -10,6 +10,8 @@ titleList = []
 authorList = []
 synopsisList = []
 pathList = []
+reviewList = []
+ratingList = []
 currentBook = []
 ran6 = random.sample(range(1, 21), 6)
 searchTitle = []
@@ -97,6 +99,9 @@ def randomLists():
     authorList.clear()
     synopsisList.clear()
     pathList.clear()
+    reviewList.clear()
+    ratingList.clear()
+
     for x in ran6:
         idList.append(readBookID(x))
         coverList.append(readCoverFile(x))
@@ -104,6 +109,8 @@ def randomLists():
         authorList.append(readBookAuthor(x))
         synopsisList.append(readBookSynopsis(x))
         pathList.append(readBookPath(x))
+        reviewList.append(get_review(x))
+        ratingList.append(get_rating(x))
 
 
 def search(q):
@@ -116,6 +123,8 @@ def search(q):
     authorList.clear()
     synopsisList.clear()
     pathList.clear()
+    reviewList.clear()
+    ratingList.clear()
 
     qNew = "%" + q + "%"
 
@@ -152,8 +161,30 @@ def search(q):
         authorList.append(readBookAuthor(x))
         synopsisList.append(readBookSynopsis(x))
         pathList.append(readBookPath(x))
+        reviewList.append(get_review(x))
+        ratingList.append(get_rating(x))
 
     print(titleList)
+
+
+def get_review(bookID):
+    con = sqlite3.connect('userdata.db')
+    cursor = con.cursor()
+    query = "SELECT * FROM reviews WHERE book_id = ?"
+    cursor.execute(query, (bookID,))
+    reviewsRecord = cursor.fetchone()
+    bookReview = reviewsRecord[0]
+    return bookReview
+
+
+def get_rating(bookID):
+    con = sqlite3.connect('userdata.db')
+    cursor = con.cursor()
+    query = "SELECT * FROM reviews WHERE book_id = ?"
+    cursor.execute(query, (bookID,))
+    ratingRecord = cursor.fetchone()
+    bookRating = ratingRecord[1]
+    return bookRating
 
 
 randomLists()

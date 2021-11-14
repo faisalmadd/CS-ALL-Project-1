@@ -122,6 +122,7 @@ def resetDetailsPage(x):
     author_label.configure(text=authorList[x])
     title_label.configure(text=titleList[x])
     synopsis_label.configure(text=synopsisList[x])
+    review1.configure(text=reviewList[x])
 
 
 def resetReader(x):
@@ -501,7 +502,12 @@ class RegistrationPage(tk.Frame):
 
                         })
                     con.commit()
-                    messagebox.showinfo('confirmation', 'Record Saved')
+                    messagebox.showinfo('Confirmation', 'Registration Successful!')
+                    register_name.delete(0, 'end')
+                    register_email.delete(0, 'end')
+                    register_mobile.delete(0, 'end')
+                    register_pwd.delete(0, 'end')
+                    pwd_again.delete(0, 'end')
                     controller.show_frame(LoginPage)
 
                 except Exception as ep:
@@ -636,6 +642,8 @@ class MainPage(tk.Frame):
 
 class DetailPage(tk.Frame):
     def __init__(self, parent, controller):
+        print(reviewList)
+        print(ratingList)
         tk.Frame.__init__(self, parent, bg='#BFCACA')
         top_frame = tk.Frame(self, bg='#CCCCCC')
         header_label = tk.Label(self, text="eBook Reader", bg='#BFCACA')
@@ -665,11 +673,11 @@ class DetailPage(tk.Frame):
         synopsis_label.config(font=("Sans", 16, 'italic'))
         title_label.place(x=200, y=80)
         author_label.place(x=200, y=110)
-        synopsis_label.place(x=200, y=150)
+        synopsis_label.place(x=200, y=140)
 
         review_label = tk.Label(self, bg='#BFCACA', text='Ratings & Reviews')
         review_label.config(font=("Sans", 20, 'bold'))
-        review_label.place(x=40, y=375)
+        review_label.place(x=40, y=365)
 
         read_btn = tk.Button(self, width=15, text='Begin Reading',
                              command=lambda: controller.refreshReader(ReaderPage, currentBook[0]))
@@ -681,26 +689,31 @@ class DetailPage(tk.Frame):
         review_entry = tk.Entry(reviewFrame, width=55, font=f)
         review_entry.pack(side=LEFT, fill=BOTH, expand=1)
 
-        var = tk.StringVar()
-        var.set('1')
+        global review1
+        review1 = tk.Label(self, bg='#BFCACA', text=reviewList[0])
+        review1.config(font=("Sans", 20, 'bold'))
+        review1.place(x=40, y=425)
 
-        one_rb = tk.Radiobutton(ratingFrame, text='1', bg='#CABFBF', variable=var, value='1', font=f)
-        two_rb = tk.Radiobutton(ratingFrame, text='2', bg='#CABFBF', variable=var, value='2', font=f)
-        three_rb = tk.Radiobutton(ratingFrame, text='3', bg='#CABFBF', variable=var, value='3', font=f)
-        four_rb = tk.Radiobutton(ratingFrame, text='4', bg='#CABFBF', variable=var, value='4', font=f)
-        five_rb = tk.Radiobutton(ratingFrame, text='5', bg='#CABFBF', variable=var, value='5', font=f)
+        rating_var = tk.StringVar()
+        rating_var.set('1')
+
+        one_rb = tk.Radiobutton(ratingFrame, text='1', bg='#CABFBF', variable=rating_var, value='1', font=f)
+        two_rb = tk.Radiobutton(ratingFrame, text='2', bg='#CABFBF', variable=rating_var, value='2', font=f)
+        three_rb = tk.Radiobutton(ratingFrame, text='3', bg='#CABFBF', variable=rating_var, value='3', font=f)
+        four_rb = tk.Radiobutton(ratingFrame, text='4', bg='#CABFBF', variable=rating_var, value='4', font=f)
+        five_rb = tk.Radiobutton(ratingFrame, text='5', bg='#CABFBF', variable=rating_var, value='5', font=f)
         one_rb.pack(expand=True, side=LEFT)
         two_rb.pack(expand=True, side=LEFT)
         three_rb.pack(expand=True, side=LEFT)
         four_rb.pack(expand=True, side=LEFT)
         five_rb.pack(expand=True, side=LEFT)
 
-        enter_button = tk.Button(reviewFrame, text='Enter')
+        enter_button = tk.Button(reviewFrame, text='Enter', command=lambda: insert_reviews())
         review_entry.grid(row=0, column=0, padx=10, pady=5)
         ratingFrame.grid(row=0, column=1, padx=10, pady=5)
         enter_button.grid(row=0, column=2, padx=10, pady=5)
 
-        reviewFrame.place(x=32, y=410)
+        reviewFrame.place(x=32, y=400)
 
         read_btn.place(x=625, y=120)
         add_fav.place(x=625, y=160)
@@ -717,6 +730,34 @@ class DetailPage(tk.Frame):
         def log_out():
             controller.show_frame(LoginPage)
             messagebox.showinfo('Logout Status', 'Logged out successfully!')
+
+        def insert_reviews():
+            check_counter = 0
+            warn = ""
+            if review_entry.get() == "":
+                warn = "Please enter review"
+            else:
+                check_counter += 1
+
+            if rating_var.get() == "":
+                warn = "Please select a rating"
+            else:
+                check_counter += 1
+
+            if check_counter == 2:
+                try:
+                    con = sqlite3.connect('userdata.db')
+                    cursor = con.cursor()
+                    cursor.execute("INSERT INTO reviews (review, rating, user_id, book_id) "
+                                   "VALUES (:review, :rating, :user_id, :book_id)",
+                                   {'review': review_entry.get(), 'rating': int(rating_var.get()),
+                                    'user_id': login_details[0], 'book_id': idList[0]})
+                    con.commit()
+                    messagebox.showinfo('Review status', 'Review submitted successfully!')
+                except Exception as ep:
+                    messagebox.showerror('', ep)
+            else:
+                messagebox.showerror('Error', warn)
 
 
 class ReaderPage(tk.Frame):
