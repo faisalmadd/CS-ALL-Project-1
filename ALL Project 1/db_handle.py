@@ -20,7 +20,7 @@ searchISBN = []
 
 
 def readBookID(bookID):
-    con = sqlite3.connect('userdata.db')
+    con = sqlite3.connect('ebook_db.db')
     cursor = con.cursor()
     query = "SELECT * from books where book_id = ?"
     cursor.execute(query, (bookID,))
@@ -30,7 +30,7 @@ def readBookID(bookID):
 
 
 def readCoverFile(bookID):
-    con = sqlite3.connect('userdata.db')
+    con = sqlite3.connect('ebook_db.db')
     cursor = con.cursor()
     query = "SELECT * from books where book_id = ?"
     cursor.execute(query, (bookID,))
@@ -40,7 +40,7 @@ def readCoverFile(bookID):
 
 
 def readBookTitle(bookID):
-    con = sqlite3.connect('userdata.db')
+    con = sqlite3.connect('ebook_db.db')
     cursor = con.cursor()
     query = "SELECT * from books where book_id = ?"
     cursor.execute(query, (bookID,))
@@ -50,7 +50,7 @@ def readBookTitle(bookID):
 
 
 def readBookAuthor(bookID):
-    con = sqlite3.connect('userdata.db')
+    con = sqlite3.connect('ebook_db.db')
     cursor = con.cursor()
     query = "SELECT * from books where book_id = ?"
     cursor.execute(query, (bookID,))
@@ -60,7 +60,7 @@ def readBookAuthor(bookID):
 
 
 def readBookSynopsis(bookID):
-    con = sqlite3.connect('userdata.db')
+    con = sqlite3.connect('ebook_db.db')
     cursor = con.cursor()
     query = "SELECT * from books where book_id = ?"
     cursor.execute(query, (bookID,))
@@ -70,7 +70,7 @@ def readBookSynopsis(bookID):
 
 
 def readBookPath(bookID):
-    con = sqlite3.connect('userdata.db')
+    con = sqlite3.connect('ebook_db.db')
     cursor = con.cursor()
     query = "SELECT * from books where book_id = ?"
     cursor.execute(query, (bookID,))
@@ -128,7 +128,7 @@ def search(q):
 
     qNew = "%" + q + "%"
 
-    con = sqlite3.connect('userdata.db')
+    con = sqlite3.connect('ebook_db.db')
     cursor = con.cursor()
 
     queryID = "SELECT * from books where title LIKE ?"
@@ -168,7 +168,7 @@ def search(q):
 
 
 def get_review(bookID):
-    con = sqlite3.connect('userdata.db')
+    con = sqlite3.connect('ebook_db.db')
     cursor = con.cursor()
     query = "SELECT * FROM reviews WHERE book_id = ?"
     cursor.execute(query, (bookID,))
@@ -178,7 +178,7 @@ def get_review(bookID):
 
 
 def get_rating(bookID):
-    con = sqlite3.connect('userdata.db')
+    con = sqlite3.connect('ebook_db.db')
     cursor = con.cursor()
     query = "SELECT * FROM reviews WHERE book_id = ?"
     cursor.execute(query, (bookID,))

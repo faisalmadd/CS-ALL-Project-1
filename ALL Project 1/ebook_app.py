@@ -152,7 +152,7 @@ def resetProfile():
 
 
 def logged_in_user(username):
-    con = sqlite3.connect('userdata.db')
+    con = sqlite3.connect('ebook_db.db')
     cursor = con.cursor()
     query = "SELECT * from record WHERE email= ?"
     cursor.execute(query, (username,))
@@ -323,7 +323,7 @@ class LoginPage(tk.Frame):
         def login_response():
             global login_details
             try:
-                con = sqlite3.connect('userdata.db')
+                con = sqlite3.connect('ebook_db.db')
                 c = con.cursor()
                 for row in c.execute("Select * from record"):
                     username = row[2]
@@ -362,7 +362,7 @@ class LoginPage(tk.Frame):
 class RegistrationPage(tk.Frame):
 
     def __init__(self, parent, controller):
-        con = sqlite3.connect('userdata.db')
+        con = sqlite3.connect('ebook_db.db')
         cur = con.cursor()
         cur.execute('''CREATE TABLE IF NOT EXISTS record(
                             user_id integer primary key autoincrement,
@@ -490,7 +490,7 @@ class RegistrationPage(tk.Frame):
 
             if check_counter == 8:
                 try:
-                    con = sqlite3.connect('userdata.db')
+                    con = sqlite3.connect('ebook_db.db')
                     cur = con.cursor()
                     cur.execute(
                         "INSERT INTO record (name, email, contact, gender, country, password) VALUES (:name, :email, "
@@ -828,7 +828,7 @@ class DetailPage(tk.Frame):
 
             if check_counter == 2:
                 try:
-                    con = sqlite3.connect('userdata.db')
+                    con = sqlite3.connect('ebook_db.db')
                     cursor = con.cursor()
                     cursor.execute("INSERT INTO reviews (review, rating, user_id, book_id) "
                                    "VALUES (:review, :rating, :user_id, :book_id)",
@@ -1040,7 +1040,7 @@ class ProfilePage(tk.Frame):
 
 class UploadPage(tk.Frame):
     def __init__(self, parent, controller):
-        con = sqlite3.connect('userdata.db')
+        con = sqlite3.connect('ebook_db.db')
         cur = con.cursor()
         cur.execute('''CREATE TABLE IF NOT EXISTS books(
                             book_id integer primary key autoincrement,
@@ -1171,7 +1171,7 @@ class UploadPage(tk.Frame):
                 try:
                     shutil.copy(book_link.get(), '../ALL Project 1/Library/')
                     shutil.copy(cover_link.get(), '../ALL Project 1/Library/BookCover')
-                    con = sqlite3.connect('userdata.db')
+                    con = sqlite3.connect('ebook_db.db')
                     cur = con.cursor()
                     cur.execute(
                         "INSERT INTO books (title, author, ISBN, synopsis, category, path, cover) VALUES (:title, "
