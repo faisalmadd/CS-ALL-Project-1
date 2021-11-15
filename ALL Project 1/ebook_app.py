@@ -127,6 +127,45 @@ def resetDetailsPage(x):
     review1.configure(text=reviewList[x] + '\t' + (ratingList[x] + ' ★'))
 
 
+def resetRecommendations():
+    randomLists()
+    newBook1 = Image.open(coverList[0])
+    newBook1 = newBook1.resize((200, 250), Image.ANTIALIAS)
+    Book1 = ImageTk.PhotoImage(newBook1)
+    book1_label.configure(image=Book1)
+    book1_label.image = Book1
+
+    newBook2 = Image.open(coverList[1])
+    newBook2 = newBook2.resize((200, 250), Image.ANTIALIAS)
+    Book2 = ImageTk.PhotoImage(newBook2)
+    book2_label.configure(image=Book2)
+    book2_label.image = Book2
+
+    newBook3 = Image.open(coverList[2])
+    newBook3 = newBook3.resize((200, 250), Image.ANTIALIAS)
+    Book3 = ImageTk.PhotoImage(newBook3)
+    book3_label.configure(image=Book3)
+    book3_label.image = Book3
+
+    newBook4 = Image.open(coverList[3])
+    newBook4 = newBook4.resize((200, 250), Image.ANTIALIAS)
+    Book4 = ImageTk.PhotoImage(newBook4)
+    book4_label.configure(image=Book4)
+    book4_label.image = Book4
+
+    newBook5 = Image.open(coverList[4])
+    newBook5 = newBook5.resize((200, 250), Image.ANTIALIAS)
+    Book5 = ImageTk.PhotoImage(newBook5)
+    book5_label.configure(image=Book5)
+    book5_label.image = Book5
+
+    newBook6 = Image.open(coverList[5])
+    newBook6 = newBook6.resize((200, 250), Image.ANTIALIAS)
+    Book6 = ImageTk.PhotoImage(newBook6)
+    book6_label.configure(image=Book6)
+    book6_label.image = Book6
+
+
 def resetReader(x):
     pages = convert_from_path(pathList[x], size=(800, 900), poppler_path=pop_path)
 
@@ -230,6 +269,11 @@ class App(tk.Tk):
     def refreshDetail(self, cont, x):
         resetDetailsPage(x)
         setCurrentBook(x)
+        frame = self.frames[cont]
+        frame.tkraise()
+
+    def refreshRecommend(self, cont):
+        resetRecommendations()
         frame = self.frames[cont]
         frame.tkraise()
 
@@ -617,7 +661,7 @@ class MainPage(tk.Frame):
         mainFrame.pack(side=TOP)
 
         recommendations_btn = tk.Button(sidebar_frame, text='Recommendations',
-                                        command=lambda: controller.show_frame(Recommendations))
+                                        command=lambda: controller.refreshRecommend(Recommendations))
         categories_btn = tk.Button(sidebar_frame, text='Categories')
         chat_btn = tk.Button(sidebar_frame, text='World Chat', command=lambda: Client(HOST, PORT))
         upload_btn = tk.Button(sidebar_frame, text='Upload an eBook', command=lambda: controller.show_frame(UploadPage))
@@ -666,55 +710,61 @@ class Recommendations(tk.Frame):
         book1 = Image.open(coverList[0])
         book1 = book1.resize((200, 250), Image.ANTIALIAS)
         book1 = ImageTk.PhotoImage(book1)
+        global book1_label
         book1_label = tk.Label(self, image=book1)
         book1_label.image = book1
         book1_label.place(x=40, y=70)
-        book1_btn = tk.Button(self, width=22, text='View Book')
+        book1_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 0))
         book1_btn.place(x=40, y=332)
 
         book2 = Image.open(coverList[1])
         book2 = book2.resize((200, 250), Image.ANTIALIAS)
         book2 = ImageTk.PhotoImage(book2)
+        global book2_label
         book2_label = tk.Label(self, image=book2)
         book2_label.image = book2
         book2_label.place(x=300, y=70)
-        book2_btn = tk.Button(self, width=22, text='View Book')
+        book2_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 1))
         book2_btn.place(x=300, y=332)
 
         book3 = Image.open(coverList[2])
         book3 = book3.resize((200, 250), Image.ANTIALIAS)
         book3 = ImageTk.PhotoImage(book3)
+        global book3_label
         book3_label = tk.Label(self, image=book3)
         book3_label.image = book3
         book3_label.place(x=560, y=70)
-        book3_btn = tk.Button(self, width=22, text='View Book')
+        book3_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 2))
         book3_btn.place(x=560, y=332)
 
         book4 = Image.open(coverList[3])
         book4 = book4.resize((200, 250), Image.ANTIALIAS)
         book4 = ImageTk.PhotoImage(book4)
+        global book4_label
         book4_label = tk.Label(self, image=book4)
         book4_label.image = book4
         book4_label.place(x=40, y=358)
-        book4_btn = tk.Button(self, width=22, text='View Book')
+        book4_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 3))
         book4_btn.place(x=40, y=620)
 
         book5 = Image.open(coverList[4])
         book5 = book5.resize((200, 250), Image.ANTIALIAS)
         book5 = ImageTk.PhotoImage(book5)
+        global book5_label
         book5_label = tk.Label(self, image=book5)
         book5_label.image = book5
         book5_label.place(x=300, y=358)
-        book5_btn = tk.Button(self, width=22, text='View Book')
+        book5_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 4))
         book5_btn.place(x=300, y=620)
 
         book6 = Image.open(coverList[5])
         book6 = book6.resize((200, 250), Image.ANTIALIAS)
         book6 = ImageTk.PhotoImage(book6)
+        global book6_label
         book6_label = tk.Label(self, image=book6)
         book6_label.image = book6
         book6_label.place(x=560, y=358)
-        book6_btn = tk.Button(self, width=22, text='View Book')
+        book6_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 5))
         book6_btn.place(x=560, y=620)
 
         def log_out():
