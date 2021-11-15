@@ -695,7 +695,7 @@ class Recommendations(tk.Frame):
         header_label.config(font=("Sans", 20, 'bold'))
 
         main_btn = tk.Button(top_frame, text='Main Page', command=lambda: controller.refreshMain(MainPage))
-        library_btn = tk.Button(top_frame, text='My Library', state='disabled')
+        library_btn = tk.Button(top_frame, text='My Library', command=lambda: controller.show_frame(MyLibrary))
         profile_btn = tk.Button(top_frame, text='Profile', command=lambda: controller.show_frame(ProfilePage))
         logout_btn = tk.Button(top_frame, text='Log Out', command=lambda: log_out())
 
