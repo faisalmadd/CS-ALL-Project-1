@@ -129,41 +129,41 @@ def resetDetailsPage(x):
 
 def resetRecommendations():
     randomLists()
-    newBook1 = Image.open(coverList[0])
-    newBook1 = newBook1.resize((200, 250), Image.ANTIALIAS)
-    Book1 = ImageTk.PhotoImage(newBook1)
-    book1_label.configure(image=Book1)
-    book1_label.image = Book1
+    newBook1R = Image.open(coverList[0])
+    newBook1R = newBook1R.resize((200, 250), Image.ANTIALIAS)
+    Book1R = ImageTk.PhotoImage(newBook1R)
+    book1R_label.configure(image=Book1R)
+    book1R_label.image = Book1R
 
-    newBook2 = Image.open(coverList[1])
-    newBook2 = newBook2.resize((200, 250), Image.ANTIALIAS)
-    Book2 = ImageTk.PhotoImage(newBook2)
-    book2_label.configure(image=Book2)
-    book2_label.image = Book2
+    newBook2R = Image.open(coverList[1])
+    newBook2R = newBook2R.resize((200, 250), Image.ANTIALIAS)
+    Book2R = ImageTk.PhotoImage(newBook2R)
+    book2R_label.configure(image=Book2R)
+    book2R_label.image = Book2R
 
-    newBook3 = Image.open(coverList[2])
-    newBook3 = newBook3.resize((200, 250), Image.ANTIALIAS)
-    Book3 = ImageTk.PhotoImage(newBook3)
-    book3_label.configure(image=Book3)
-    book3_label.image = Book3
+    newBook3R = Image.open(coverList[2])
+    newBook3R = newBook3R.resize((200, 250), Image.ANTIALIAS)
+    Book3R = ImageTk.PhotoImage(newBook3R)
+    book3R_label.configure(image=Book3R)
+    book3R_label.image = Book3R
 
-    newBook4 = Image.open(coverList[3])
-    newBook4 = newBook4.resize((200, 250), Image.ANTIALIAS)
-    Book4 = ImageTk.PhotoImage(newBook4)
-    book4_label.configure(image=Book4)
-    book4_label.image = Book4
+    newBook4R = Image.open(coverList[3])
+    newBook4R = newBook4R.resize((200, 250), Image.ANTIALIAS)
+    Book4R = ImageTk.PhotoImage(newBook4R)
+    book4R_label.configure(image=Book4R)
+    book4R_label.image = Book4R
 
-    newBook5 = Image.open(coverList[4])
-    newBook5 = newBook5.resize((200, 250), Image.ANTIALIAS)
-    Book5 = ImageTk.PhotoImage(newBook5)
-    book5_label.configure(image=Book5)
-    book5_label.image = Book5
+    newBook5R = Image.open(coverList[4])
+    newBook5R = newBook5R.resize((200, 250), Image.ANTIALIAS)
+    Book5R = ImageTk.PhotoImage(newBook5R)
+    book5R_label.configure(image=Book5R)
+    book5R_label.image = Book5R
 
-    newBook6 = Image.open(coverList[5])
-    newBook6 = newBook6.resize((200, 250), Image.ANTIALIAS)
-    Book6 = ImageTk.PhotoImage(newBook6)
-    book6_label.configure(image=Book6)
-    book6_label.image = Book6
+    newBook6R = Image.open(coverList[5])
+    newBook6R = newBook6R.resize((200, 250), Image.ANTIALIAS)
+    Book6R = ImageTk.PhotoImage(newBook6R)
+    book6R_label.configure(image=Book6R)
+    book6R_label.image = Book6R
 
 
 def resetReader(x):
@@ -707,65 +707,65 @@ class Recommendations(tk.Frame):
         top_frame.place(x=426, y=20)
         header_label.place(x=40, y=20)
 
-        book1 = Image.open(coverList[0])
-        book1 = book1.resize((200, 250), Image.ANTIALIAS)
-        book1 = ImageTk.PhotoImage(book1)
-        global book1_label
-        book1_label = tk.Label(self, image=book1)
-        book1_label.image = book1
-        book1_label.place(x=40, y=70)
-        book1_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 0))
-        book1_btn.place(x=40, y=332)
+        book1R = Image.open(coverList[0])
+        book1R = book1R.resize((200, 250), Image.ANTIALIAS)
+        book1R = ImageTk.PhotoImage(book1R)
+        global book1R_label
+        book1R_label = tk.Label(self, image=book1R)
+        book1R_label.image = book1R
+        book1R_label.place(x=40, y=70)
+        book1R_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 0))
+        book1R_btn.place(x=40, y=332)
 
-        book2 = Image.open(coverList[1])
-        book2 = book2.resize((200, 250), Image.ANTIALIAS)
-        book2 = ImageTk.PhotoImage(book2)
-        global book2_label
-        book2_label = tk.Label(self, image=book2)
-        book2_label.image = book2
-        book2_label.place(x=300, y=70)
-        book2_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 1))
-        book2_btn.place(x=300, y=332)
+        book2R = Image.open(coverList[1])
+        book2R = book2R.resize((200, 250), Image.ANTIALIAS)
+        book2R = ImageTk.PhotoImage(book2R)
+        global book2R_label
+        book2R_label = tk.Label(self, image=book2R)
+        book2R_label.image = book2R
+        book2R_label.place(x=300, y=70)
+        book2R_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 1))
+        book2R_btn.place(x=300, y=332)
 
-        book3 = Image.open(coverList[2])
-        book3 = book3.resize((200, 250), Image.ANTIALIAS)
-        book3 = ImageTk.PhotoImage(book3)
-        global book3_label
-        book3_label = tk.Label(self, image=book3)
-        book3_label.image = book3
-        book3_label.place(x=560, y=70)
-        book3_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 2))
-        book3_btn.place(x=560, y=332)
+        book3R = Image.open(coverList[2])
+        book3R = book3R.resize((200, 250), Image.ANTIALIAS)
+        book3R = ImageTk.PhotoImage(book3R)
+        global book3R_label
+        book3R_label = tk.Label(self, image=book3R)
+        book3R_label.image = book3R
+        book3R_label.place(x=560, y=70)
+        book3R_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 2))
+        book3R_btn.place(x=560, y=332)
 
-        book4 = Image.open(coverList[3])
-        book4 = book4.resize((200, 250), Image.ANTIALIAS)
-        book4 = ImageTk.PhotoImage(book4)
-        global book4_label
-        book4_label = tk.Label(self, image=book4)
-        book4_label.image = book4
-        book4_label.place(x=40, y=358)
-        book4_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 3))
-        book4_btn.place(x=40, y=620)
+        book4R = Image.open(coverList[3])
+        book4R = book4R.resize((200, 250), Image.ANTIALIAS)
+        book4R = ImageTk.PhotoImage(book4R)
+        global book4R_label
+        book4R_label = tk.Label(self, image=book4R)
+        book4R_label.image = book4R
+        book4R_label.place(x=40, y=358)
+        book4R_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 3))
+        book4R_btn.place(x=40, y=620)
 
-        book5 = Image.open(coverList[4])
-        book5 = book5.resize((200, 250), Image.ANTIALIAS)
-        book5 = ImageTk.PhotoImage(book5)
-        global book5_label
-        book5_label = tk.Label(self, image=book5)
-        book5_label.image = book5
-        book5_label.place(x=300, y=358)
-        book5_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 4))
-        book5_btn.place(x=300, y=620)
+        book5R = Image.open(coverList[4])
+        book5R = book5R.resize((200, 250), Image.ANTIALIAS)
+        book5R = ImageTk.PhotoImage(book5R)
+        global book5R_label
+        book5R_label = tk.Label(self, image=book5R)
+        book5R_label.image = book5R
+        book5R_label.place(x=300, y=358)
+        book5R_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 4))
+        book5R_btn.place(x=300, y=620)
 
-        book6 = Image.open(coverList[5])
-        book6 = book6.resize((200, 250), Image.ANTIALIAS)
-        book6 = ImageTk.PhotoImage(book6)
-        global book6_label
-        book6_label = tk.Label(self, image=book6)
-        book6_label.image = book6
-        book6_label.place(x=560, y=358)
-        book6_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 5))
-        book6_btn.place(x=560, y=620)
+        book6R = Image.open(coverList[5])
+        book6R = book6R.resize((200, 250), Image.ANTIALIAS)
+        book6R = ImageTk.PhotoImage(book6R)
+        global book6R_label
+        book6R_label = tk.Label(self, image=book6R)
+        book6R_label.image = book6R
+        book6R_label.place(x=560, y=358)
+        book6R_btn = tk.Button(self, width=22, text='View Book', command=lambda: controller.refreshDetail(DetailPage, 5))
+        book6R_btn.place(x=560, y=620)
 
         def log_out():
             controller.show_frame(LoginPage)
